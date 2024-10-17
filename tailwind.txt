@@ -1,0 +1,18 @@
+1. npm install -D tailwindcss postcss autoprefixer
+2. npx tailwindcss init -p
+
+3. file config :
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./resources/**/*.blade.php",
+    "./resources/**/*.js",
+    "./resources/**/*.vue",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+
+4. 
