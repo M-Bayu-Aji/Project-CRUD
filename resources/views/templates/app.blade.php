@@ -11,6 +11,10 @@
 
     <!--=============== CSS ===============-->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
+    {{-- Bootstrap --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
     @vite('resources/css/app.css')
     <title>Shirt Shop</title>
 </head>
@@ -36,7 +40,15 @@
                                 class="uhui nav__link {{ Route::is('product.product_page') ? 'active' : '' }}">Products</a>
                         </li>
                         <li><a href="{{ route('karyawan.karyawan_page') }}"
-                                class="uhui {{ Route::is('karyawan.karyawan_page') ? 'active' : '' }} nav__link">Karyawan</a></li>
+                                class="uhui {{ Route::is('karyawan.karyawan_page') ? 'active' : '' }} nav__link">Karyawan</a>
+                        </li>
+                        <li>
+                            <form action="/logout" method="post">
+                                @csrf
+                                <button type="submit" class="uhui nav__link text-black dropdown-item"><i class="bi bi-box-arrow-right"></i>
+                                    Logout</button>
+                            </form>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -53,11 +65,11 @@
                 <p class="text-gray-400 text-sm">
                     &copy; 2024 <a href="#" class="text-blue-500 hover:underline">MuhammadBayuAji</a>
                 </p>
-                </div>
             </div>
         </div>
+        </div>
     </footer>
-    
+
     <!--=============== MAIN JS ===============-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/main.js') }}"></script>
