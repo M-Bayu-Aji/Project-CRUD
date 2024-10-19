@@ -20,7 +20,7 @@
         </div>
         <div class="mx-auto my-3">
             @if ($product->isEmpty())
-                <p class="text-center text-3xl text-gray-500">Tidak ada produk.</p>
+                <div class="p-40 text-xl text-center text-gray-500">Tidak ada produk.</div>
             @endif
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
                     @foreach ($product as $index => $item)
@@ -41,7 +41,11 @@
                     @endforeach
                 </div>
         </div>
+        <div class="d-flex justify-content-end my-3">
+            {{ $product->links() }}
+        </div>
     </div>
+
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">

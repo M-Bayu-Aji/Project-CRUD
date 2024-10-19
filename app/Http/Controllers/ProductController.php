@@ -12,7 +12,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $product = Product::all();
+        $product = Product::simplePaginate(9);
         return view('pages.product_page', compact('product'));
     }
 
