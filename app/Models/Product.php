@@ -9,5 +9,9 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'price', 'stock', 'image'];
+    protected $fillable = ['payment_id','name', 'price', 'stock', 'image', 'total'];
+
+    public function orders() {
+        return $this->belongsTo(Payment::class);
+    }
 }

@@ -13,7 +13,9 @@ class ProductController extends Controller
     public function index()
     {
         $product = Product::simplePaginate(9);
-        return view('pages.product_page', compact('product'));
+        return view('pages.product_page', compact('product'), [
+            'title' => 'Product List'
+        ]);
     }
 
     /**
@@ -21,7 +23,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('product.create');
+        return view('product.create', [
+            'title' => 'Create Product'
+        ]);
     }
 
     /**
@@ -83,7 +87,9 @@ class ProductController extends Controller
     public function edit(string $id)
     {
         $product = Product::find($id);
-        return view('product.edit', compact('product'));
+        return view('product.edit', compact('product') , [
+            'title' => 'Edit Product'
+        ]);
     }
 
     /**

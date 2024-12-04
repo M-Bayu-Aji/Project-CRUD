@@ -8,7 +8,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-        <h1 class="tittle text-center font-bold text-3xl my-10"><i class="ri-store-3-line"></i> Thrift.Store</h1>
+        <h1 class="tittle text-center font-bold text-3xl mb-10"><i class="ri-store-3-line"></i> Thrift.Store</h1>
         <div class="container-second">
             <div class="label flex justify-between items-center rounded-lg">
                 <div class="text-xl font-bold text-gray-700 bg-gray-100 p-3">Daftar Produk</div>

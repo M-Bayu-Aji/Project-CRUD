@@ -1,8 +1,14 @@
 @extends('templates.app')
 
 @section('container-content')
-    <section class="welcome rounded lg:p-20 bg-white my-2.5">
+    <section class="welcome rounded lg:p-20 bg-white">
         <div class="m-2.5 p-4">
+            @if (Session::get('success'))
+                <div class="alert font-sans mt-2 alert-success flex justify-between">
+                    {{ Session::get('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             <div class="flex flex-col lg:flex-row items-center justify-between">
                 <div class="lg:w-1/2 lg:text-left">
                     <h1 class="text-4xl font-bold text-gray-800 mb-4 lg:mb-6">Selamat datang di Thrift Store kami!</h1>
@@ -11,7 +17,7 @@
                         hingga berbagai aksesoris unik. Kami menyediakan berbagai pilihan produk dengan kondisi terbaik
                         untuk memenuhi gaya kamu.
                     </p>
-                    <a href="#shop-now"
+                    <a href="{{ route('payment.payment_page') }}"
                         class="inline-block bg-blue-600 text-white py-2 px-6 rounded-full shadow-lg transition-transform duration-300 hover:bg-blue-700">
                         Belanja Sekarang
                     </a>
@@ -95,7 +101,7 @@
             <!-- Contact Form and Info -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <!-- Contact Info -->
-                <div class="bg-white p-8 rounded-lg shadow-lg">
+                <div class="bg-white p-8 rounded-lg shadow">
                     <h3 class="text-2xl font-semibold text-gray-800 mb-6">Detail Kontak</h3>
                     <p class="text-gray-600 mb-4"><i class="fas fa-phone text-blue-500"></i> Telepon: +62 123-456-789</p>
                     <p class="text-gray-600 mb-4"><i class="fas fa-envelope text-blue-500"></i> Email:
@@ -104,14 +110,15 @@
                         No. 123, Jakarta</p>
                     <div class="flex space-x-4 mt-6">
                         <!-- Social Icons -->
-                        <a href="#" class="text-blue-600 hover:text-blue-800"><i class="ri-facebook-circle-fill"></i></a>
+                        <a href="#" class="text-blue-600 hover:text-blue-800"><i
+                                class="ri-facebook-circle-fill"></i></a>
                         <a href="#" class="text-blue-600 hover:text-blue-800"><i class="ri-whatsapp-fill"></i></a>
                         <a href="#" class="text-blue-600 hover:text-blue-800"><i class="ri-instagram-fill"></i></a>
                     </div>
                 </div>
 
                 <!-- Contact Form -->
-                <div class="bg-white p-8 rounded-lg shadow-lg">
+                <div class="bg-white p-8 rounded-lg shadow">
                     <h3 class="text-2xl font-semibold text-gray-800 mb-6">Kirim Pesan</h3>
                     <form action="#" method="POST">
                         <div class="mb-4">
@@ -137,4 +144,32 @@
             </div>
         </div>
     </section>
+    @push('script')
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script>
+            function showModalDelete(id, name) {
+                // memasukkan teks dari parameter ke html bagian id = 'nama_karyawan'
+                $('#nama_karyawan').text(name);
+                // memanggil route hapus
+                let url = "{{ route('karyawan.delete_karyawan', ':id') }}";
+                // isi path dinamis : id dari data parameter id
+                url = url.replace(':id', id);
+                // action="" di form diisi dengan url diatas
+                $('form').attr('action', url);
+                // memunculkan modal dengan id='exampleModal'
+                $('#exampleModal').modal('show');
+            }
+
+            // Tambahkan script untuk alert auto-close
+            $(document).ready(function() {
+                // Otomatis close alert setelah 5 detik
+                window.setTimeout(function() {
+                    $(".alert").fadeTo(500, 0).slideUp(500, function() {
+                        $(this).remove();
+                    });
+                }, 5000);
+            });
+        </script>
+    @endpush
 @endsection

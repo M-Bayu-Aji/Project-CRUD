@@ -26,22 +26,22 @@
                     <div class="space-y-4">
                         <div class="flex flex-col">
                             <label for="name" class="text-gray-700 font-medium">Name :</label>
-                            <input type="text" name="name" id="name" value="{{ $product['name'] }}" class="border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
+                            <input type="text" name="name" id="name" value="{{ $product['name'] }}" class="form-control font-sans">
                         </div>
 
                         <div class="flex flex-col">
                             <label for="price" class="text-gray-700 font-medium">Price (Rp.) :</label>
-                            <input type="number" name="price" id="price" value="{{ $product['price'] }}" class="border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
+                            <input type="number" name="price" id="price" value="{{ $product['price'] }}" class="form-control font-sans">
                         </div>
 
                         <div class="flex flex-col">
                             <label for="image" class="text-gray-700 font-medium">Choose Image :</label>
-                            <input type="file" id="image" name="image" class="border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" onchange="previewImage(event)">
+                            <input type="file" id="image" name="image" class="form-control font-sans" onchange="previewImage(event)">
                         </div>
 
                         <div class="flex flex-col">
                             <label for="stock" class="text-gray-700 font-medium">$tock :</label>
-                            <input type="number" name="stock" id="stock" value="{{ $product['stock'] }}" class="border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
+                            <input type="number" name="stock" id="stock" value="{{ $product['stock'] }}" class="form-control font-sans">
                         </div>
                     </div>
                 </div>

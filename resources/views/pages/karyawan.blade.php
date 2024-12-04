@@ -16,23 +16,23 @@
         </div>
 
         @if ($karyawan->isEmpty())
-                <p class="text-center p-40 text-xl text-gray-500">Tidak ada data karyawan.</p>
-            @endif
+            <p class="text-center p-40 text-xl text-gray-500">Tidak ada data karyawan.</p>
+        @endif
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
             <!-- Card 1 -->
             @foreach ($karyawan as $index => $item)
                 <div class="bg-gray-100 shadow-md rounded-lg">
-                    <img class="m-auto w-52 p-1 border-2 border-gray-200 h-52 object-cover my-3 rounded" src="{{ asset($item->image) }}"
-                        alt="Foto Karyawan">
+                    <img class="m-auto w-52 p-1 border-2 border-gray-200 h-52 object-cover my-3 rounded"
+                        src="{{ asset($item->image) }}" alt="Foto Karyawan">
                     <div class="p-4">
                         <p class="text-gray-600">Nama : <b class="text-black">{{ $item->name }}</b></p>
                         <p class="text-gray-600">Gender : <b class="text-black">{{ $item->jenis_kelamin }}</b></p>
-                        <p class="text-gray-600">Posisi : <b class="text-black">{{ $item->jabatan }}</b></p>
+                        <p class="text-gray-600">Role : <b class="text-black">{{ $item->jabatan }}</b></p>
                         <div class="flex justify-between mt-2 gap-2">
                             <a href="{{ route('karyawan.edit_karyawan_page', $item['id']) }}"
                                 class="w-1/2 bg-gray-200 text-gray-700 py-2 text-center rounded font-bold hover:bg-gray-300">Edit</a>
-                            <button 
+                            <button
                                 class="w-1/2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                                 onclick="showModalDelete('{{ $item->id }}', '{{ $item->name }}')">Hapus</button>
                         </div>

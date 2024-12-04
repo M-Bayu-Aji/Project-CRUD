@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('image');
             $table->string('name');
             $table->enum('jenis_kelamin', ['Pria', 'Perempuan']);
-            $table->enum('jabatan', ['Admin','Kasir', 'Pelayan']);
+            $table->enum('jabatan', ['Admin','Kasir']);
             $table->timestamps();
         });
     }

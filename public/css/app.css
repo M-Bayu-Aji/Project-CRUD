@@ -67,7 +67,7 @@ a {
     left: 0;
     width: 100%;
     background-color: white;
-    box-shadow: 0 2px 16px hsla(220, 32%, 8%, 0.3);
+    box-shadow: 0 2px 8px hsla(220, 32%, 8%, 0.3);
     z-index: var(--z-fixed);
     /* padding: 0 30px; */
     /* margin: 0 auto; */
@@ -163,6 +163,7 @@ a {
     transform: scaleX(1);
 }
 
+
 /* Navigation for mobile devices */
 @media screen and (max-width: 1118px) {
     .nav__menu {
@@ -175,6 +176,7 @@ a {
         pointer-events: none;
         opacity: 0;
         transition: top 0.4s, opacity 0.3s;
+        height: auto;
     }
     .nav__menu::-webkit-scrollbar {
         width: 0;

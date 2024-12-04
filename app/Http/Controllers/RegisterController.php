@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class RegisterController extends Controller
 {
@@ -32,6 +33,12 @@ class RegisterController extends Controller
 
         // $request->session()->flash('success', 'Registration successfull! Please login');
 
-        return redirect('/login')->with('success', 'Registration successfull! Please login');
+        return redirect('/')->with('success', 'Registration successfull! Please login');
+    }
+
+    public function deleteAccount($id) {
+        User::findOrFail($id)->delete();
+        
+        return redirect()->route('login')->with('success', 'Berhasil menghapus akun!');
     }
 }

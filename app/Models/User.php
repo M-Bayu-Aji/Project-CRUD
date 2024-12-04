@@ -16,12 +16,13 @@ class User extends Authenticatable
      *
      * @var array
      */
-    // protected $fillable = [
-    //     'name',
-    //     'username',
-    //     'email',
-    //     'password',
-    // ];
+    protected $fillable = [
+        'name',
+        'username',
+        'email',
+        'password',
+        'role'
+    ];
     protected $guarded = ['id'];
 
     /**
@@ -43,8 +44,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function posts()
-    {
-        return $this->hasMany(Post::class);
+    public function orders() {
+        return $this->hasMany(Payment::class);
     }
 }

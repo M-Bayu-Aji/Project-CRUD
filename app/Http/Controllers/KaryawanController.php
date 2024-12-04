@@ -13,7 +13,9 @@ class KaryawanController extends Controller
     public function index()
     {
         $karyawan = Karyawan::all();
-        return view('pages.karyawan', compact('karyawan'));
+        return view('pages.karyawan', compact('karyawan'), [
+            'title' => 'Karyawan'
+        ]);
     }
 
     /**
@@ -21,7 +23,9 @@ class KaryawanController extends Controller
      */
     public function create()
     {
-        return view('karyawan.create');
+        return view('karyawan.create', [
+            'title' => 'Create Karyawan'
+        ]);
     }
 
     /**
