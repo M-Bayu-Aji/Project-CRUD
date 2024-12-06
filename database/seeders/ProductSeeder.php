@@ -16,19 +16,19 @@ class ProductSeeder extends Seeder
         Product::create([
             'name' => 'Sepatu Ortus Seight',
             'price' => 300000,
-            'stock' => 10,
+            'stock' => 100,
             'image' => 'img/Sepatu Ortus Seight.jpg' // Assuming the image is in the public/images folder
         ]);
         Product::create([
             'name' => 'Topi',
             'price' => 50000,
-            'stock' => 6,
+            'stock' => 60,
             'image' => 'img/topi.jpeg' // Assuming the image is in the public/images folder
         ]);
         Product::create([
             'name' => 'Sweater',
             'price' => 10000,
-            'stock' => 5,
+            'stock' => 50,
             'image' => 'img/sweaterEdit.jpg' // Assuming the image is in the public/images folder
         ]);
     }

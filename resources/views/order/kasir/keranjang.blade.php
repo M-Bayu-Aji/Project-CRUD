@@ -3,6 +3,12 @@
 @section('container-content')
     <div class="container mx-auto px-4 pt-24 pb-72 bg-white">
         <h2 class="text-2xl mb-4 font-sans">Keranjang Belanja : <span class="font-bold">{{ Auth::user()->name }}</span></h2>
+        @if (Session::get('success'))
+            <div class="alert mt-2 alert-success flex justify-between">
+                {{ Session::get('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <table class="min-w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
             <thead class="bg-gray-100">
                 @php
@@ -13,17 +19,22 @@
                         }
                     }
                 @endphp
-                @if (Auth::check() && Auth::user()->id == $order->user_id)
-                    <h4 class="text-xl block font-sans mb-4">Total: <span class="font-bold">Rp.
-                            {{ number_format($grandTotal, 0, ',', '.') }}</span></h4>
+                @if ($products->isEmpty())
+                    <div class="text-xl text-center text-gray-500"></div>
+                @else
+                    @if (Auth::check() && Auth::user()->id == $order->user_id)
+                        <h4 class="text-xl block font-sans mb-4">Total: <span class="font-bold">Rp.
+                                {{ number_format($grandTotal, 0, ',', '.') }}</span></h4>
+                    @endif
                 @endif
-                    <tr>
-                        <th class="py-3 px-4 border-1 border-gray-300 text-center">Produk</th>
-                        <th class="py-3 px-4 border-1 border-gray-300 text-center">Harga</th>
-                        <th class="py-3 px-4 border-1 border-gray-300 text-center">Kuantitas</th>
-                        <th class="py-3 px-4 border-1 border-gray-300 text-center">Total</th>
-                        <th class="py-3 px-4 border-1 border-gray-300 text-center">Aksi</th>
-                    </tr>
+
+                <tr>
+                    <th class="py-3 px-4 border-1 border-gray-300 text-center">Produk</th>
+                    <th class="py-3 px-4 border-1 border-gray-300 text-center">Harga</th>
+                    <th class="py-3 px-4 border-1 border-gray-300 text-center">Kuantitas</th>
+                    <th class="py-3 px-4 border-1 border-gray-300 text-center">Total</th>
+                    <th class="py-3 px-4 border-1 border-gray-300 text-center">Aksi</th>
+                </tr>
             </thead>
             <tbody>
                 @if ($products->isEmpty())
@@ -65,5 +76,21 @@
             </div>
         </div>
     </div>
-    </div>
 @endsection
+
+@push('script')
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <script>
+        // Tambahkan script untuk alert auto-close
+        $(document).ready(function() {
+            // Otomatis close alert setelah 5 detik
+            window.setTimeout(function() {
+                $(".alert").fadeTo(500, 0).slideUp(500, function() {
+                    $(this).remove();
+                });
+            }, 5000);
+        });
+    </script>
+@endpush

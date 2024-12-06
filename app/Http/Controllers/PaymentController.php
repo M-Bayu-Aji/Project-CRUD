@@ -14,7 +14,11 @@ class   PaymentController extends Controller
     public function index()
     {
         $product = Product::simplePaginate(9);
-        return view('order.kasir.product_page', compact('product'), [
+        $pembelian = Payment::all();
+
+        $productIds = $pembelian->pluck('product_id')->toArray();
+        $arrayValues = array_count_values($productIds);
+        return view('order.kasir.product_page', compact('product', 'arrayValues'), [
             'title' => 'Payment Page'
         ]);
     }
@@ -36,12 +40,15 @@ class   PaymentController extends Controller
             'kty' => 'required|integer|min:1',
         ]);
 
+        // Set product_id
+        $validatedData['product_id'] = $request->product_id;
         // Hitung total
         $validatedData['total'] = $request->price * $request->kty;
 
+        // Cek stok produk
         $product = Product::where('id', $request->product_id)->first();
         if ($product->stock < $request->kty) {
-            return redirect()->back()->with('success', 'Stok tidak mencukupi!');
+            return redirect()->back()->with('error', 'Stok tidak mencukupi!');
         }
 
         $product->stock -= $request->kty;
@@ -53,8 +60,14 @@ class   PaymentController extends Controller
         // Simpan data ke database
         Payment::create($validatedData);
 
-        // Redirect dengan pesan sukses
-        return redirect()->back()->with('success', 'Pembelian berhasil ditambahkan ke keranjang kamu!.');
+        // Cek aksi berdasarkan input "action"
+        if ($request->action === 'add_to_cart') {
+            // Aksi untuk Masukkan Keranjang
+            return redirect()->back()->with('success', 'Pembelian berhasil ditambahkan ke keranjang kamu!');
+        } elseif ($request->action === 'buy_now') {
+            // Aksi untuk Beli Sekarang
+            return redirect()->route('payment.add_payment_page')->with('success', 'Pembelian berhasil!');
+        }
     }
 
 
@@ -89,10 +102,25 @@ class   PaymentController extends Controller
      */
     public function destroy($id)
     {
-        Payment::findOrFail($id)->delete();
+        // Cari data Payment berdasarkan ID
+        $payment = Payment::findOrFail($id);
 
+        // Cari produk terkait menggunakan product_id dari Payment
+        $product = Product::find($payment->product_id);
+
+        // Jika produk ditemukan, tambahkan stok berdasarkan nilai kty
+        if ($product) {
+            $product->stock += $payment->kty;
+            $product->save();
+        }
+
+        // Hapus data Payment setelah stok diperbarui
+        $payment->delete();
+
+        // Redirect kembali dengan pesan sukses
         return redirect()->back()->with('success', 'Berhasil Menghapus Data Product!');
     }
+
 
     public function addPayment($id)
     {

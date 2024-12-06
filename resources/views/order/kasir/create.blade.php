@@ -23,83 +23,103 @@
                         src="{{ asset($product->image) }}" />
                 </div>
                 <div class="w-1/2 p-4">
-                    <form action="{{ route('payment.add_payment_page_cart') }}" method="POST" class="space-y-4">
-                        @csrf
-                        <div class="mb-4">
-                            <h1 class="text-xl">{{ $product->name }}</h1>
-                            <h1 class="text-xl font-semibold">Rp. {{ number_format($product->price, 0, ',', '.') }}</h1>
+                    <!-- Informasi Produk -->
+                    <div class="mb-4">
+                        <h1 class="text-xl">{{ $product->name }}</h1>
+                        <h1 class="text-xl font-semibold">Rp. {{ number_format($product->price, 0, ',', '.') }}</h1>
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <input type="hidden" name="name" value="{{ $product->name }}">
+                        <input type="hidden" name="price" value="{{ $product->price }}">
+                    </div>
+
+                    <!-- Input Kuantitas -->
+                    <div class="mb-4">
+                        <div class="flex items-center justify-between">
+                            <p class="text-lg font-semibold">Kuantitas</p>
+                            <div class="flex items-center mt-2 border border-gray-300 rounded overflow-hidden w-fit">
+                                <span id="decrement"
+                                    class="w-12 h-12 flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-black hover:cursor-pointer">
+                                    <span class="text-2xl font-semibold">-</span>
+                                </span>
+                                <input id="counter" name="kty" type="number" value="1" min="1"
+                                    class="w-16 h-12 text-center text-orange-500 text-xl border-none outline-none">
+                                <span id="increment"
+                                    class="w-12 h-12 flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-black hover:cursor-pointer">
+                                    <span class="text-2xl font-semibold">+</span>
+                                </span>
+                            </div>
+                            <span class="text-gray-500 text-sm">{{ $product->stock }} buah tersedia</span>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Masukkan Keranjang -->
+                    <div class="flex gap-2">
+                        <form action="{{ route('payment.add_payment_page_cart') }}" method="post" class="w-full">
+                            @csrf
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
                             <input type="hidden" name="name" value="{{ $product->name }}">
                             <input type="hidden" name="price" value="{{ $product->price }}">
-                        </div>
-                        <div class="mb-4">
-                            <div class="flex items-center justify-between">
-                                <p class="text-lg font-semibold">Kuantitas</p>
-                                <div class="flex items-center mt-2 border border-gray-300 rounded overflow-hidden w-fit">
-                                    <span id="decrement"
-                                        class="w-12 h-12 flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-black hover:cursor-pointer">
-                                        <span class="text-2xl font-semibold">-</span>
-                                    </span>
-                                    <input id="counter" name="kty" type="number" value="1" min="1"
-                                        class="w-16 h-12 text-center text-orange-500 text-xl border-none outline-none">
-                                    <span id="increment"
-                                        class="w-12 h-12 flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-black hover:cursor-pointer">
-                                        <span class="text-2xl font-semibold">+</span>
-                                    </span>
-                                </div>
-                                <span class="text-gray-500 text-sm">{{ $product->stock }} buah tersedia</span>
-                            </div>
-                        </div>
-                        <div class="flex gap-2">
-                            <form action="route('payment.add_payment_page_cart') }}" method="post">
-                                <button class="w-full bg-gray-100 text-gray-800 py-2 rounded hover:bg-gray-200 transition duration-300 flex items-center justify-center"
-                                type='submit'><i class="ri-shopping-cart-line mr-2"></i>Masukkan Keranjang</button>
-                            </form>
+                            <input type="hidden" name="kty" id="kty_input" value="1">
+                            <input type="hidden" name="action" value="add_to_cart">
+                            <button
+                                class="w-full bg-gray-100 text-gray-800 py-2 rounded hover:bg-gray-200 transition duration-300 flex items-center justify-center"
+                                type="submit">
+                                <i class="ri-shopping-cart-line mr-2"></i>Masukkan Keranjang
+                            </button>
+                        </form>
+
+                        <!-- Tombol Beli Sekarang -->
+                        <form action="{{ route('payment.add_payment_page_cart') }}" method="post" class="w-full">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <input type="hidden" name="name" value="{{ $product->name }}">
+                            <input type="hidden" name="price" value="{{ $product->price }}">
+                            <input type="hidden" name="kty" id="kty_input_buy_now" value="1">
+                            <input type="hidden" name="action" value="buy_now">
                             <button
                                 class="w-full bg-gray-800 text-white py-2 rounded hover:bg-gray-700 transition duration-300"
                                 type="submit">
                                 Beli Sekarang
                             </button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-@endsection
+    @endsection
 
-@push('script')
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script>
-        let counterInput = document.getElementById("counter");
+    @push('script')
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script>
+            let counterInput = document.getElementById("counter");
 
-        // Tombol Increment
-        document
-            .getElementById("increment")
-            .addEventListener("click", function() {
-                let counter = parseInt(counterInput.value) || 1; // Pastikan nilai valid
-                counterInput.value = counter + 1;
-            });
-
-        // Tombol Decrement
-        document
-            .getElementById("decrement")
-            .addEventListener("click", function() {
-                let counter = parseInt(counterInput.value) || 1; // Pastikan nilai valid
-                if (counter > 1) {
-                    counterInput.value = counter - 1;
-                }
-            });
-
-        // Tambahkan script untuk alert auto-close
-        $(document).ready(function() {
-            // Otomatis close alert setelah 5 detik
-            window.setTimeout(function() {
-                $(".alert").fadeTo(500, 0).slideUp(500, function() {
-                    $(this).remove();
+            // Tombol Increment
+            document
+                .getElementById("increment")
+                .addEventListener("click", function() {
+                    let counter = parseInt(counterInput.value) || 1; // Pastikan nilai valid
+                    counterInput.value = counter + 1;
                 });
-            }, 5000);
-        });
-    </script>
-@endpush
+
+            // Tombol Decrement
+            document
+                .getElementById("decrement")
+                .addEventListener("click", function() {
+                    let counter = parseInt(counterInput.value) || 1; // Pastikan nilai valid
+                    if (counter > 1) {
+                        counterInput.value = counter - 1;
+                    }
+                });
+
+            // Tambahkan script untuk alert auto-close
+            $(document).ready(function() {
+                // Otomatis close alert setelah 5 detik
+                window.setTimeout(function() {
+                    $(".alert").fadeTo(500, 0).slideUp(500, function() {
+                        $(this).remove();
+                    });
+                }, 5000);
+            });
+        </script>
+    @endpush
