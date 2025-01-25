@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\KaryawanController;
@@ -19,10 +21,25 @@ Route::middleware(['IsLogout'])->group(function () {
 
 Route::middleware(['IsLogin'])->group(function () {
     Route::get('/welcome', function () {
-        return view('pages.welcome', [
-            'title' => 'Welcome'
-        ]);
+        $role = auth()->user()->role;
+        if ($role == 'admin') {
+            return app(AdminController::class)->index();
+        } else {
+
+            return view('pages.welcome', [
+                'title' => 'Welcome'
+            ]);
+        }
     })->name('welcome');
+
+    Route::middleware(['IsAdmin'])->group(function () {
+        Route::prefix('/admin')->name('admin.')->group(function () {
+            Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+            Route::get('/payments/{user}', [AdminController::class, 'show'])->name('detail_payment');
+            Route::get('total_pesanan', [AdminController::class, 'totalPesanan'])->name('total_pesanan');
+            Route::post('/export-order', [AdminController::class, 'exportOrder'])->name('export_order');
+        });
+    });
 
     Route::prefix('/product')->name('product.')->group(function () {
         Route::get('/list-product', [ProductController::class, 'index'])->name('product_page');
@@ -48,6 +65,12 @@ Route::middleware(['IsLogin'])->group(function () {
         Route::get('/add-payment-page', [PaymentController::class, 'show'])->name('add_payment_page');
         Route::post('/add-payment-page/cart', [PaymentController::class, 'store'])->name('add_payment_page_cart');
         Route::delete('/delete-payment/{id}', [PaymentController::class, 'destroy'])->name('delete_payment');
+    });
+
+    Route::prefix('/order')->name('order.')->group(function () {
+        Route::get('/order-page/{id}', [OrderController::class, 'show'])->name('order_page1');
+        Route::get('/order-page', [OrderController::class, 'store'])->name('order_page2');
+        Route::get('/download/{id}', [OrderController::class, 'createPDF'])->name('download_pdf');
     });
 });
 

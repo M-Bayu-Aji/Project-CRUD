@@ -27,7 +27,7 @@ class ProductSeeder extends Seeder
         ]);
         Product::create([
             'name' => 'Sweater',
-            'price' => 10000,
+            'price' => 100000,
             'stock' => 50,
             'image' => 'img/sweaterEdit.jpg' // Assuming the image is in the public/images folder
         ]);

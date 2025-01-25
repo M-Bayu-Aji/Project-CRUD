@@ -21,7 +21,7 @@
 
 <body class="m-2.5">
     <!--=============== HEADER ===============-->
-    <header class="header rounded">
+    <header class="header shadow-md rounded">
         <nav class="nav container1">
             <div class="nav__data1">
                 <a href="#" class="nav__logo text-xl">
@@ -34,22 +34,27 @@
                     </div>
                     <div class="nav__menu" id="nav-menu">
                         <ul class="nav__list">
-                            <li><a href="{{ route('welcome') }}"
-                                    class="uhui {{ Route::is('welcome') ? 'active' : '' }} nav__link">Home</a></li>
                             @if (Auth::user()->role == 'admin')
+                                <li><a href="{{ route('welcome') }}"
+                                        class="uhui {{ Route::is('welcome') ? 'active' : '' }} nav__link">Dashboard</a>
+                                </li>
                                 <li><a href="{{ route('product.product_page') }}"
                                         class="uhui nav__link {{ Route::is('product.product_page') ? 'active' : '' }}">Products</a>
                                 </li>
                                 <li><a href="{{ route('karyawan.karyawan_page') }}"
                                         class="uhui {{ Route::is('karyawan.karyawan_page') ? 'active' : '' }} nav__link">Karyawan</a>
+                                </li>
+                            @else
+                                <li><a href="{{ route('welcome') }}"
+                                        class="uhui {{ Route::is('welcome') ? 'active' : '' }} nav__link">Home</a></li>
+                                <li><a href="{{ route('payment.payment_page') }}"
+                                        class="uhui {{ Route::is('payment.payment_page') ? 'active' : '' }} nav__link">Produk</a>
+                                </li>
+                                <li><a href="{{ route('payment.add_payment_page') }}"
+                                        class="uhui {{ Route::is('payment.add_payment_page') ? 'active' : '' }} nav__link"><i
+                                            class="bi bi-cart"></i>Keranjang</a>
+                                </li>
                             @endif
-                            </li>
-                            <li><a href="{{ route('payment.payment_page') }}"
-                                    class="uhui {{ Route::is('payment.payment_page') ? 'active' : '' }} nav__link">Pembelian</a>
-                            </li>
-                            <li><a href="{{ route('payment.add_payment_page') }}"
-                                    class="uhui {{ Route::is('payment.add_payment_page') ? 'active' : '' }} nav__link"><i class="bi bi-cart"></i>Keranjang</a>
-                            </li>
                             <li class="relative">
                                 <a data-bs-toggle="dropdown"
                                     class="uhui nav__link cursor-pointer flex items-center text-black hover:text-gray-600">

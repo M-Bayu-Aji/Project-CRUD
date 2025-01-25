@@ -1,7 +1,7 @@
 @extends('templates.app')
 
 @section('container-content')
-    <div class="container-first rounded p-16 my-2.5 bg-white">
+    <div class="container-first rounded p-16 bg-white">
         @if (Session::get('success'))
             <div class="alert mt-2 alert-success flex justify-between">
                 {{ Session::get('success') }}
@@ -47,33 +47,33 @@
     </div>
 
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form class="modal-content" method="POST" action="">
-                    {{-- action kosong, diisi melalui js karena id dikirim ke js nya  --}}
-                    @csrf
-                    {{-- menimpa method="post" jadi delete sesuai web.php http method --}}
-                    @method('DELETE')
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5 font-bold" id="exampleModalLabel">Hapus data product</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="font-medium modal-body">
-                        {{-- konten dinamis pada teks ini bagian nama obat, sehingga nama obatnya disediakan tempat penyimpanan (tag b) --}}
-                        <span class="font-thin font-serif">Apakah anda yakin ingin menghapus Product</span> <b
-                            id="nama_product">?</b>?
-                    </div>
-                    <div class="font-medium modal-footer">
-                        <button type="button" class="w-1/4 bg-gray-200 text-gray-700 py-2 rounded"
-                            data-bs-dismiss="modal">Batal</button>
-                        <button type="submit"
-                            class="w-1/4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 py-2">Hapus</button>
-                    </div>
-                </form>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form class="modal-content" method="POST" action="">
+                        {{-- action kosong, diisi melalui js karena id dikirim ke js nya  --}}
+                        @csrf
+                        {{-- menimpa method="post" jadi delete sesuai web.php http method --}}
+                        @method('DELETE')
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 font-bold" id="exampleModalLabel">Hapus data product</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="font-medium modal-body">
+                            {{-- konten dinamis pada teks ini bagian nama obat, sehingga nama obatnya disediakan tempat penyimpanan (tag b) --}}
+                            <span class="font-thin font-serif">Apakah anda yakin ingin menghapus Product</span> <b
+                                id="nama_product">?</b>?
+                        </div>
+                        <div class="font-medium modal-footer">
+                            <button type="button" class="w-1/4 bg-gray-200 text-gray-700 py-2 rounded"
+                                data-bs-dismiss="modal">Batal</button>
+                            <button type="submit"
+                                class="w-1/4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 py-2">Hapus</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
 @endsection
 
 @push('script')

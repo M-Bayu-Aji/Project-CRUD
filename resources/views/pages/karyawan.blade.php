@@ -1,7 +1,7 @@
 @extends('templates.app')
 
 @section('container-content')
-    <div class="container-fi bg-white mt-2.5 rounded mx-auto p-16">
+    <div class="container-fi bg-white rounded mx-auto p-16">
         @if (Session::get('success'))
             <div class="alert mt-2 alert-success flex justify-between">
                 {{ Session::get('success') }}

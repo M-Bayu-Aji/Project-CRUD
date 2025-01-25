@@ -59,11 +59,11 @@
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
                             <input type="hidden" name="name" value="{{ $product->name }}">
                             <input type="hidden" name="price" value="{{ $product->price }}">
-                            <input type="hidden" name="kty" id="kty_input" value="1">
+                            <input type="hidden" name="kty" id="kty_input" value="">
                             <input type="hidden" name="action" value="add_to_cart">
                             <button
                                 class="w-full bg-gray-100 text-gray-800 py-2 rounded hover:bg-gray-200 transition duration-300 flex items-center justify-center"
-                                type="submit">
+                                type="submit" onclick="document.getElementById('kty_input').value = document.getElementById('counter').value;">
                                 <i class="ri-shopping-cart-line mr-2"></i>Masukkan Keranjang
                             </button>
                         </form>
@@ -74,11 +74,11 @@
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
                             <input type="hidden" name="name" value="{{ $product->name }}">
                             <input type="hidden" name="price" value="{{ $product->price }}">
-                            <input type="hidden" name="kty" id="kty_input_buy_now" value="1">
+                            <input type="hidden" name="kty" id="kty_input_buy_now" value="">
                             <input type="hidden" name="action" value="buy_now">
                             <button
                                 class="w-full bg-gray-800 text-white py-2 rounded hover:bg-gray-700 transition duration-300"
-                                type="submit">
+                                type="submit" onclick="document.getElementById('kty_input_buy_now').value = document.getElementById('counter').value;">
                                 Beli Sekarang
                             </button>
                         </form>

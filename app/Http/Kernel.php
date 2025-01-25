@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
         // import middleware
         'IsLogin' => \App\Http\Middleware\IsLogin::class,
         'IsLogout' => \App\Http\Middleware\IsLogout::class,
+        'IsAdmin' => \App\Http\Middleware\IsAdmin::class,
     ];
 }

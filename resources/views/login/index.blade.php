@@ -1,96 +1,65 @@
-@extends('templates.app')
+@extends('templates.logRis')
 
-@section('container-content')
-    <div class="min-h-screen flex items-center justify-center bg-white">
-        <div class="w-full max-w-xl bg-white shadow rounded-lg p-8">
+@section('content')
+    <!-- Left Section: Login Form -->
+    <div class="w-full md:w-1/2 p-10 shadow-xl">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Selamat Datang kembali!</h1>
+            <p class="text-gray-500 mt-2">Masuk untuk mencari penawaran barang hemat terbaik.</p>
+        </div>
 
-            @if (Session::get('success'))
-                <div class="alert font-sans mt-2 alert-success flex justify-between">
-                    {{ Session::get('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <!-- Login Form -->
+        <form action="/login" method="post" class="space-y-6">
+            @csrf
+            <!-- Email Field -->
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                <div class="relative mt-2">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
+                        <i class="bi bi-envelope text-gray-400"></i>
+                    </span>
+                    <input type="email" name="email" id="email" required placeholder="Enter your email"
+                        class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none">
                 </div>
-            @endif
+                @error('email')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
-            <main>
-                <h1 class="text-2xl font-bold text-gray-700 mb-6 text-center">Please login</h1>
-                <form action="/login" method="post">
-                    @csrf
-                    <div class="mb-4">
-                        <label for="email" class="block text-sm my-2 font-medium text-gray-700">Email address
-                            :</label>
-                        <input type="email" name="email" id="email" class="font-sans form-control"
-                            placeholder="name@example.com" value="{{ old('email') }}">
-                        @error('email')
-                            <small class="font-sans text-red-500 text-sm mt-1">
-                                {{ $message }}
-                            </small>
-                        @enderror
-                    </div>
+            <!-- Password Field -->
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                <div class="relative mt-2">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
+                        <i class="fas fa-lock text-gray-400 mr-2"></i>
+                    </span>
+                    <input type="password" name="password" id="password" required placeholder="Enter your password"
+                        class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none">
+                    <span class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                        <button type="button" id="togglePassword" class="text-gray-500 hover:text-green-600">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </span>
+                </div>
+                @error('password')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
-                    <div class="mb-6">
-                        <label for="password" class="block text-sm my-2 font-medium text-gray-700">Password :</label>   
-                        <input type="password" name="password" id="password" class="font-sans form-control"
-                            placeholder="Password">
-                        @error('password')
-                            <small class="font-sans d-block text-red-500 text-sm mt-1">
-                                {{ $message }}
-                            </small>
-                        @enderror
-                        <label for="showPassword" class="font-sans mt-3">
-                            <input type="checkbox" id="showPassword" onclick="showPassword()">
-                            Tampilkan Password
-                        </label>
-                    </div>
+            <!-- Submit Button -->
+            <button type="submit"
+                class="w-full font-bold bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                Sign In
+            </button>
+        </form>
 
-                    <button type="submit"
-                        class="w-full py-2 px-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition duration-300">
-                        Login
-                    </button>
-                </form>
-
-                <small class="block text-center text-sm text-gray-500 mt-4">
-                    Not registered? <a href="/register" class="text-blue-600 hover:underline">Register Now!</a>
-                </small>
-            </main>
+        <!-- Register Link -->
+        <div class="mt-6 text-center">
+            <p class="text-sm text-gray-600">
+                Belum punya akun?
+                <a href="/register" class="text-blue-500 hover:underline">Register Sekarang</a>
+            </p>
         </div>
     </div>
-    @push('script')
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-        <script>
-            function showModalDelete(id, name) {
-                // memasukkan teks dari parameter ke html bagian id = 'nama_karyawan'
-                $('#nama_karyawan').text(name);
-                // memanggil route hapus
-                let url = "{{ route('karyawan.delete_karyawan', ':id') }}";
-                // isi path dinamis : id dari data parameter id
-                url = url.replace(':id', id);
-                // action="" di form diisi dengan url diatas
-                $('form').attr('action', url);
-                // memunculkan modal dengan id='exampleModal'
-                $('#exampleModal').modal('show');
-            }
-
-            // Tambahkan script untuk alert auto-close
-            $(document).ready(function() {
-                // Otomatis close alert setelah 5 detik
-                window.setTimeout(function() {
-                    $(".alert").fadeTo(500, 0).slideUp(500, function() {
-                        $(this).remove();
-                    });
-                }, 5000);
-            });
-
-            const passwordField = document.getElementById("password");
-            const showPasswordCheckbox = document.getElementById("showPassword");
-
-            showPasswordCheckbox.addEventListener("change", function() {
-                if (this.checked) {
-                    passwordField.type = "text";
-                } else {
-                    passwordField.type = "password";
-                }
-            });
-        </script>
-    @endpush
 @endsection

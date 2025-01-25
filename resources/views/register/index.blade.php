@@ -1,74 +1,98 @@
-@extends('templates.app')
+@extends('templates.logRis')
 
-@section('container-content')
-    <div class="min-h-screen flex items-center justify-center bg-white">
-        <div class="w-full max-w-lg bg-white shadow my-5 rounded-lg p-8">
-            <main>
-                <h1 class="text-2xl font-bold text-gray-700 mb-6 text-center">Registration Form</h1>
-                <form action="{{ route('register') }}" method="post">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="name" class="block text-sm my-2 font-medium text-gray-700">Name :</label>
-                        <input type="text" name="name" id="name"
-                            class="font-sans form-control @error('name')  @enderror"
-                            placeholder="Name" required value="{{ old('name') }}">
-                        @error('name')
-                            <div class="text-red-500 text-sm mt-1">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
+@section('content')
+    <!-- Left Section: Registration Form -->
+    <div class="w-full md:w-1/2 p-10 shadow-xl">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800">Buat Akun Anda</h1>
+            <p class="text-gray-500 mt-2">Daftar untuk mencari penawaran barang hemat terbaik.</p>
+        </div>
 
-                    <div class="mb-3">
-                        <label for="username" class="block text-sm my-2 font-medium text-gray-700">Username :</label>
-                        <input type="text" name="username" id="username"
-                            class="font-sans form-control @error('username')  @enderror"
-                            placeholder="Username" required value="{{ old('username') }}">
-                        @error('username')
-                            <div class="text-red-500 text-sm mt-1">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
+        <!-- Registration Form -->
+        <form action="{{ route('register') }}" method="post" class="space-y-6">
+            @csrf
+            <!-- Full Name Field -->
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                <div class="relative mt-2">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
+                        <i class="bi bi-person text-gray-400"></i>
+                    </span>
+                    <input type="text" name="name" id="name" required placeholder="Enter your full name"
+                        class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                        value="{{ old('name') }}">
+                </div>
+                @error('name')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
-                    <div class="mb-3">
-                        <label for="email" class="block text-sm my-2 font-medium text-gray-700">Email address :</label>
-                        <input type="email" name="email" id="email"
-                            class="font-sans form-control @error('email')  @enderror"
-                            placeholder="name@example.com" required value="{{ old('email') }}">
-                        @error('email')
-                            <div class="text-red-500 text-sm mt-1">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
+            {{-- username field --}}
+            <div>
+                <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                <div class="relative mt-2">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
+                        <i class="bi bi-person-badge text-gray-400"></i>
+                    </span>
+                    <input type="text" name="username" id="username" required placeholder="Enter your username"
+                        class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                        value="{{ old('username') }}">
+                </div>
+                @error('username')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
-                    <div class="mb-6">
-                        <label for="password" class="block text-sm my-2 font-medium text-gray-700">Password :</label>
-                        <input type="password" name="password" id="password"
-                            class="font-sans form-control @error('password')  @enderror"
-                            placeholder="Password" required>
-                        @error('password')
-                            <div class="text-red-500 text-sm mt-1">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
+            <!-- Email Field -->
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                <div class="relative mt-2">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
+                        <i class="bi bi-envelope text-gray-400"></i>
+                    </span>
+                    <input type="email" name="email" id="email" required placeholder="Enter your email"
+                        class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                        value="{{ old('email') }}">
+                </div>
+                @error('email')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
-                    <button type="submit"
-                        class="w-full py-3 px-4 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition duration-300">
-                        Register
-                    </button>
-                </form>
+            <!-- Password Field -->
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                <div class="relative mt-2">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
+                        <i class="fas fa-lock text-gray-400 mr-2"></i>
+                    </span>
+                    <input type="password" name="password" id="password" required placeholder="Create a password"
+                        class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none">
+                    <span class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                        <button type="button" id="togglePassword" class="text-gray-500 hover:text-green-600">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </span>
+                </div>
+                @error('password')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
-                <small class="block text-center text-sm text-gray-500 mt-4">
-                    Already registered? 
-                    <form action="{{ route('login') }}" method="post" class="inline">
-                        @csrf
-                        <button type="submit" class="text-blue-600 hover:underline">Login</button>
-                    </form>
-                </small>
-            </main>
+            <!-- Submit Button -->
+            <button type="submit"
+                class="bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 font-bold w-full">
+                Sign Up
+            </button>
+        </form>
+
+        <!-- Login Link -->
+        <div class="mt-6 text-center">
+            <p class="text-sm text-gray-600">
+                Sudah punya akun?
+                <a href="{{ route('login') }}" class="text-blue-500 hover:underline">Masuk</a>
+            </p>
         </div>
     </div>
 @endsection

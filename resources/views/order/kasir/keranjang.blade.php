@@ -72,7 +72,9 @@
             <div class="flex justify-between">
                 <a href="{{ route('payment.payment_page') }}"
                     class="text-blue-500 border-1 rounded-md px-4 py-2 border-blue-800 hover:text-blue-700 hover:bg-gray-100">Back</a>
-                <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Checkout</button>
+                <form action="{{ route('order.order_page2') }}">
+                    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Checkout</button>
+                </form>
             </div>
         </div>
     </div>

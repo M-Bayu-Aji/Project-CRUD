@@ -23,7 +23,7 @@ class RegisterController extends Controller
             'name' => 'required|max:255',
             'username' => ['required', 'min:3', 'max:255', 'unique:users'],
             'email' => 'required|email:dns|unique:users',
-            'password' => 'required|min:5|max:255'
+            'password' => 'required|min:4|max:255'
         ]);
 
         // $validatedData['password'] = bcrypt($validatedData['password']);
@@ -33,7 +33,7 @@ class RegisterController extends Controller
 
         // $request->session()->flash('success', 'Registration successfull! Please login');
 
-        return redirect('/')->with('success', 'Registration successfull! Please login');
+        return redirect()->route('welcome')->with('success', 'Registration successful! Please login');
     }
 
     public function deleteAccount($id) {

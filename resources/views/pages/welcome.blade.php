@@ -30,7 +30,7 @@
         </div>
     </section>
 
-    <section class="rounded bg-white lg:p-16">
+    <section class="rounded mt-2.5 bg-white lg:p-16">
         <div class="container mx-auto px-4">
             <h2 class="text-4xl font-bold text-gray-800 text-center mb-12">Our Services</h2>
             <div

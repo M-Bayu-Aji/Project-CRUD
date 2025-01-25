@@ -30,7 +30,7 @@
                                 </p>
                                 <p class="text-gray-700 mb-2"><b>Stock : {{ $item['stock'] }}</b>
                                 </p>
-                                <p class="text-gray-700 mb-2"><b>{{ $arrayValues[$item['id']] ?? 0 }} Terjual</b></p>
+                                <p class="text-gray-700 mb-2"><b>{{ $totalSold[$item->id] ?? 0 }} Terjual</b></p>
                                 <div class="flex items-center mb-2">
                                 </div>
                             </div>
