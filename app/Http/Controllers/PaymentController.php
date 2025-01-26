@@ -73,7 +73,7 @@ class PaymentController extends Controller
         // Cek aksi berdasarkan input "action"
         if ($request->action === 'add_to_cart') {
             // Aksi untuk Masukkan Keranjang
-            return redirect()->back()->with('success', 'Pembelian berhasil ditambahkan ke keranjang kamu!');
+            return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang kamu!');
         } elseif ($request->action === 'buy_now') {
             // Aksi untuk Beli Sekarang
             return redirect()->route('payment.add_payment_page');
@@ -118,11 +118,11 @@ class PaymentController extends Controller
         // Cari produk terkait menggunakan product_id dari Payment
         $product = Product::find($payment->product_id);
 
-        // Jika produk ditemukan, tambahkan stok berdasarkan nilai kty
-        if ($product) {
-            $product->stock += $payment->kty;
-            $product->save();
-        }
+        // // Jika produk ditemukan, tambahkan stok berdasarkan nilai kty
+        // if ($product) {
+        //     $product->stock += $payment->kty;
+        //     $product->save();
+        // }
 
         // Hapus data Payment setelah stok diperbarui
         $payment->delete();
