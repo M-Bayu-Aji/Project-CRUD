@@ -28,8 +28,7 @@
                                 <h2 class="text-xl font-bold mb-2">{{ $item['name'] }}</h2>
                                 <p class="text-gray-700 mb-2"><b>Rp. {{ number_format($item['price'], 0, ',', '.') }}</b>
                                 </p>
-                                <p class="text-gray-700 mb-2"><b>Stock : {{ $item['stock'] }}</b>
-                                </p>
+                                <p class="text-gray-700 mb-2"><b>Stock : {{ $item['stock'] }}</b></p>
                                 <p class="text-gray-700 mb-2"><b>{{ $totalSold[$item->id] ?? 0 }} Terjual</b></p>
                                 <div class="flex items-center mb-2">
                                 </div>

@@ -35,7 +35,7 @@
             <thead>
                 <tr class="bg-gray-100">
                     <th class="border border-gray-200 text-left px-4 py-2 font-medium text-gray-700">Product Name</th>
-                    <th class="border border-gray-200 text-left px-4 py-2 font-medium text-gray-700">Quantity</th>
+                    <th class="border border-gray-200 text-left px-4 py-2 font-medium text-gray-700">kty</th>
                     <th class="border border-gray-200 text-left px-4 py-2 font-medium text-gray-700">Price (per unit)
                     </th>
                     <th class="border border-gray-200 text-left px-4 py-2 font-medium text-gray-700">Total Price</th>
@@ -43,14 +43,14 @@
             </thead>
             <tbody>
                 @php $grandTotal = 0; @endphp
-                @foreach ($order['products'] as $product)
+                @foreach ($products as $product)
                     @php
-                        $totalPrice = $product['kty'] * $product['price'];
+                        $totalPrice = $product['quantity'] * $product['price'];
                         $grandTotal += $totalPrice;
                     @endphp
                     <tr class="hover:bg-gray-50">
                         <td class="border border-gray-200 px-4 py-2 text-gray-600">{{ $product['name'] }}</td>
-                        <td class="border border-gray-200 px-4 py-2 text-gray-600">{{ $product['kty'] }}</td>
+                        <td class="border border-gray-200 px-4 py-2 text-gray-600">{{ $product['quantity'] }}</td>
                         <td class="border border-gray-200 px-4 py-2 text-gray-600">Rp
                             {{ number_format($product['price'], 0, ',', '.') }}</td>
                         <td class="border border-gray-200 px-4 py-2 text-gray-600">Rp

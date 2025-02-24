@@ -35,9 +35,10 @@ Route::middleware(['IsLogin'])->group(function () {
     Route::middleware(['IsAdmin'])->group(function () {
         Route::prefix('/admin')->name('admin.')->group(function () {
             Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
-            Route::get('/payments/{user}', [AdminController::class, 'show'])->name('detail_payment');
+            Route::get('/payments/{id}', [AdminController::class, 'show'])->name('detail_payment');
             Route::get('total_pesanan', [AdminController::class, 'totalPesanan'])->name('total_pesanan');
             Route::post('/export-order', [AdminController::class, 'exportOrder'])->name('export_order');
+            Route::get('/admin/search', [AdminController::class, 'search'])->name('search');
         });
     });
 
@@ -65,16 +66,18 @@ Route::middleware(['IsLogin'])->group(function () {
         Route::get('/add-payment-page', [PaymentController::class, 'show'])->name('add_payment_page');
         Route::post('/add-payment-page/cart', [PaymentController::class, 'store'])->name('add_payment_page_cart');
         Route::delete('/delete-payment/{id}', [PaymentController::class, 'destroy'])->name('delete_payment');
+        Route::delete('/payment/delete-selected', [PaymentController::class, 'deleteSelected'])->name('delete_selected');
     });
 
     Route::prefix('/order')->name('order.')->group(function () {
+        Route::get('/order-page', [OrderController::class, 'index'])->name('order_page');
         Route::get('/order-page/{id}', [OrderController::class, 'show'])->name('order_page1');
-        Route::get('/order-page', [OrderController::class, 'store'])->name('order_page2');
+        Route::post('/order-page', [OrderController::class, 'store'])->name('order_page2');
         Route::get('/download/{id}', [OrderController::class, 'createPDF'])->name('download_pdf');
     });
 });
 
-Route::post('/logout', [LoginController::class, 'logout']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/register', [RegisterController::class, 'index'])->middleware('guest');
 Route::post('/register-proses', [RegisterController::class, 'store'])->name('register')->middleware('guest');

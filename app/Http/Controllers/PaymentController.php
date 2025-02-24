@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
 use Illuminate\Http\Request;
+
 class PaymentController extends Controller
 {
     /**
@@ -19,15 +20,14 @@ class PaymentController extends Controller
         // Ambil data total pembelian dari Payment
         $pembelian = Payment::all();
 
-        // Hitung total penjualan berdasarkan kolom `products` di tabel `orders`
         $totalSold = Order::all()
             ->flatMap(function ($order) {
-                // Decode JSON products dan ubah menjadi array
-                return collect($order->products);
+                $products = json_decode($order->products, true);
+                return collect($products);
             })
-            ->groupBy('product_id')
+            ->groupBy('product_id') // Kelompokkan berdasarkan product_id, bukan payment_id
             ->map(function ($group) {
-                return $group->sum('kty');
+                return $group->sum('quantity'); // Hitung total kuantitas untuk setiap product_id
             });
 
         return view('order.kasir.product_page', compact('product', 'pembelian', 'totalSold'), [
@@ -66,6 +66,8 @@ class PaymentController extends Controller
 
         // Set user_id
         $validatedData['user_id'] = auth()->id();
+
+        $validatedData['image'] = $product->image;
 
         // Simpan data ke database
         Payment::create($validatedData);
@@ -129,6 +131,18 @@ class PaymentController extends Controller
 
         // Redirect kembali dengan pesan sukses
         return redirect()->back()->with('success', 'Berhasil Menghapus Data Product!');
+    }
+
+    public function deleteSelected(Request $request)
+    {
+        // Ambil ID item yang dipilih dari input tersembunyi
+        $selectedIds = explode(',', $request->input('selected_items'));
+
+        // Hapus item yang dipilih dari database
+        Payment::whereIn('id', $selectedIds)->delete();
+
+        // Redirect kembali dengan pesan sukses
+        return redirect()->back()->with('success', 'Item yang dipilih berhasil dihapus.');
     }
 
 

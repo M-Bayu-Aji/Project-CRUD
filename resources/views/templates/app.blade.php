@@ -3,17 +3,23 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!--=============== REMIXICONS ===============-->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <!--=============== CSS ===============-->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
     {{-- Bootstrap --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
 
     @vite('resources/css/app.css')
     <title>{{ $title }}</title>
@@ -44,50 +50,61 @@
                                 <li><a href="{{ route('karyawan.karyawan_page') }}"
                                         class="uhui {{ Route::is('karyawan.karyawan_page') ? 'active' : '' }} nav__link">Karyawan</a>
                                 </li>
-                            @else
+                            @endif
+
+                            @if (Auth::user()->role == 'user')
                                 <li><a href="{{ route('welcome') }}"
                                         class="uhui {{ Route::is('welcome') ? 'active' : '' }} nav__link">Home</a></li>
                                 <li><a href="{{ route('payment.payment_page') }}"
                                         class="uhui {{ Route::is('payment.payment_page') ? 'active' : '' }} nav__link">Produk</a>
                                 </li>
-                                <li><a href="{{ route('payment.add_payment_page') }}"
-                                        class="uhui {{ Route::is('payment.add_payment_page') ? 'active' : '' }} nav__link"><i
-                                            class="bi bi-cart"></i>Keranjang</a>
+                            @endif
+
+                            @if (Auth::user()->role == 'admin' || Auth::user()->role == 'user')
+                                <li class="relative">
+                                    <a data-bs-toggle="dropdown"
+                                        class="uhui nav__link cursor-pointer flex items-center text-black hover:text-gray-600">
+                                        <i class="bi bi-person-circle"></i>
+                                        <span>{{ auth()->user()->name }}</span>
+                                        <i class="bi bi-chevron-down"></i>
+                                    </a>
+                                    <ul
+                                        class="dropdown-menu absolute hidden mt-2 w-48 bg-white rounded-md shadow ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                        <li>
+                                            <form action="/logout" method="post" class="w-full">
+                                                @csrf
+                                                <button type="submit"
+                                                    class="dropdown-item w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 flex items-center space-x-2">
+                                                    <i class="bi bi-box-arrow-right"></i>
+                                                    <span>Logout</span>
+                                                </button>
+                                            </form>
+                                        </li>
+                                        <li>
+                                            <form action="{{ route('delete_akun', Auth::user()->id) }}" method="post"
+                                                class="w-full">
+                                                @csrf
+                                                @method('delete')
+                                                <button type="submit"
+                                                    class="dropdown-item w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-100 hover:text-red-600 flex items-center space-x-2">
+                                                    <i class="bi bi-trash"></i>
+                                                    <span>Hapus Akun</span>
+                                                </button>
+                                            </form>
+                                        </li>
+                                    </ul>
                                 </li>
                             @endif
-                            <li class="relative">
-                                <a data-bs-toggle="dropdown"
-                                    class="uhui nav__link cursor-pointer flex items-center text-black hover:text-gray-600">
-                                    <i class="bi bi-person-circle"></i>
-                                    <span>{{ auth()->user()->name }}</span>
-                                    <i class="bi bi-chevron-down"></i>
-                                </a>
-                                <ul
-                                    class="dropdown-menu absolute hidden mt-2 w-48 bg-white rounded-md shadow ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                    <li>
-                                        <form action="/logout" method="post" class="w-full">
-                                            @csrf
-                                            <button type="submit"
-                                                class="dropdown-item w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 flex items-center space-x-2">
-                                                <i class="bi bi-box-arrow-right"></i>
-                                                <span>Logout</span>
-                                            </button>
-                                        </form>
-                                    </li>
-                                    <li>
-                                        <form action="{{ route('delete_akun', Auth::user()->id) }}" method="post"
-                                            class="w-full">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit"
-                                                class="dropdown-item w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-100 hover:text-red-600 flex items-center space-x-2">
-                                                <i class="bi bi-trash"></i>
-                                                <span>Hapus Akun</span>
-                                            </button>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
+
+                            @if (Auth::user()->role == 'user')
+                                <li><a href="{{ route('payment.add_payment_page') }}"
+                                        class="uhui {{ Route::is('payment.add_payment_page') ? 'active' : '' }} nav__link relative">
+                                        <i class="bi bi-cart cart"></i>
+                                        @if (auth()->user()->orders && auth()->user()->orders->count() > 0)
+                                            <span class="quantity-cart">{{ Auth::user()->orders->count() }}</span>
+                                        @endif
+                                    </a>
+                            @endif
                         </ul>
                 @endif
             </div>

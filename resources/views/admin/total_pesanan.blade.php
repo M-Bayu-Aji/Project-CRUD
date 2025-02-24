@@ -49,24 +49,24 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         @forelse ($pesanan as $index => $order)
-                            @foreach ($order['products'] as $item)
-                                <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $index + 1 }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $order->name }}</td>
-                                    <td class="px-6 py-4 text-sm text-gray-700">
-                                        <span class="inline-flex items-center">
-                                            {{ $item['name'] }} : {{ $item['kty'] }}
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                            <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $loop->iteration }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $order->name }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">
+                                    @foreach (json_decode($order->products, true) as $product)
+                                        <div class="mb-1">
+                                            {{ $product['name'] }} : {{ $product['quantity'] }}
+                                        </div>
+                                    @endforeach
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                                         <span class="font-medium">Rp.
-                                            {{ number_format($item['total'], 0, ',', '.') }}</span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                        {{ \Carbon\Carbon::parse($order->created_at)->locale('id')->translatedFormat('l, d F Y') }}
-                                    </td>
-                                </tr>
-                            @endforeach
+                                            {{ number_format($order->total_price, 0, ',', '.') }}</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                    {{ \Carbon\Carbon::parse($order->created_at)->locale('id')->translatedFormat('l, d F Y') }}
+                                </td>
+                            </tr>
                         @empty
                             <tr>
                                 <td colspan="5" class="px-6 py-4 text-center text-gray-500">Tidak ada data pesanan</td>

@@ -14,12 +14,12 @@
             @csrf
             <!-- Full Name Field -->
             <div>
-                <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
                 <div class="relative mt-2">
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
                         <i class="bi bi-person text-gray-400"></i>
                     </span>
-                    <input type="text" name="name" id="name" required placeholder="Enter your full name"
+                    <input type="text" name="name" id="name" required placeholder="Enter your name"
                         class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
                         value="{{ old('name') }}">
                 </div>

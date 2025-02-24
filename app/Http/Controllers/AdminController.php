@@ -21,6 +21,16 @@ class AdminController extends Controller
         $karyawan = Karyawan::all();
         $pesanan = Order::all();
         $users = User::has('ordersPayment')->get();
+        $totalSold = Order::all()
+            ->flatMap(function ($order) {
+                $products = json_decode($order->products, true);
+                return collect($products);
+            })
+            ->groupBy('product_id') // Kelompokkan berdasarkan product_id, bukan payment_id
+            ->map(function ($group) {
+                return $group->sum('quantity'); // Hitung total kuantitas untuk setiap product_id
+            });
+
         return view('admin.dashboard', compact('product', 'karyawan', 'pesanan', 'users'), [
             'title' => 'Admin Dashboard'
         ]);
@@ -49,37 +59,62 @@ class AdminController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show($id)
     {
-        // Mengambil data pembayaran berdasarkan pengguna
-        $payments = $user->ordersPayment;
+        $payments = Order::find($id);
 
-        return view('admin.detail', compact('user', 'payments'), [
+        if (!$payments) {
+            abort(404);
+        }
+
+        // Pastikan data adalah string sebelum json_decode
+        if (!is_array($payments->products)) {
+            $payments->products = json_decode($payments->products, true);
+        }
+
+        $arrayOrder = [];
+
+        // Pastikan setelah json_decode, hasilnya adalah array
+        if (is_array($payments->products)) {
+            foreach ($payments->products as $product) {
+                array_push($arrayOrder, [
+                    'name' => $product['name'],
+                    'price' => $product['price'],
+                    'quantity' => $product['quantity'],
+                    'total' => $product['total'],
+                    'image' => $product['image']
+                ]);
+            }
+        } else {
+            dd("Data tidak valid:", $payments->products);
+        }
+
+
+        $user = User::find($payments->user_id);
+        return view('admin.detail', compact('payments', 'user', 'arrayOrder'), [
             'title' => 'Detail Payment'
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function search(Request $request)
     {
-        //
-    }
+        $search = $request->input('search'); // Ambil nilai search dari request
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        // Lakukan pencarian berdasarkan username
+        $users = User::where('username', 'like', '%' . $search . '%')
+            ->with('ordersPayment') // Eager load relasi ordersPayment
+            ->get();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        // Jika ingin menampilkan pesanan (orders) dari user yang ditemukan
+        $pesanan = collect(); // Buat koleksi kosong untuk menyimpan pesanan
+        foreach ($users as $user) {
+            $pesanan = $pesanan->merge($user->ordersPayment); // Gabungkan pesanan dari setiap user
+        }
+
+        return view('admin.orders', [
+            'pesanan' => $pesanan, // Kirim data pesanan ke view
+            'title' => 'Orders',
+            'search' => $search, // Kirim nilai search untuk ditampilkan di input
+        ]);
     }
 }

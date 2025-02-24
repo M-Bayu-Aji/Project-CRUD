@@ -13,7 +13,12 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() {}
+    public function index() {
+        $pesanan = Order::all();
+        return view('admin.orders', compact('pesanan'), [
+            'title' => 'Orders'
+        ]);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -26,47 +31,63 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store()
+    public function store(Request $request)
     {
-        // Ambil semua data dari Payment
-        $orderItems = Payment::all();
+        // Get selected products
+        $selectedProducts = $request->input('selected_products', []);
+        $quantities = $request->input('quantity', []);
 
-        // Pastikan data tidak kosong
-        if ($orderItems->isEmpty()) {
-            return redirect()->back()->with('error', 'No payment data available to process.');
+        // Check if any products are selected
+        if (empty($selectedProducts)) {
+            return redirect()->back()->with('error', 'No products selected.');
         }
 
-        // Buat array produk menggunakan koleksi
-        $products = $orderItems->map(function ($item) {
-            return [
-                'product_id' => $item->product_id,
-                'name' => $item->name,
-                'price' => $item->price,
-                'kty' => $item->kty,
-                'total' => $item->total
-            ];
-        })->toArray();
+        // Get selected products from database
+        $products = Payment::whereIn('id', $selectedProducts)->get();
 
-        // Buat data order baru
+        // Prepare order items array
+        $orderItems = [];
+
+        foreach ($products as $product) {
+            $quantity = $quantities[$product->id] ?? 1;
+            $orderItems[] = [
+                'product_id' => $product->product_id, // Pastikan ini sesuai dengan kolom yang benar
+                'name' => $product->name,
+                'price' => $product->price,
+                'quantity' => $quantity,
+                'total' => $product->price * $quantity,
+                'image' => $product->image
+            ];
+        }
+
+        $totalPrice = array_sum(array_column($orderItems, 'total'));
+        
+        $lastOrder = Order::latest()->first();
+        $nextOrderNumber = $lastOrder ? intval(substr($lastOrder->order_id, 1)) + 1 : 1;
+        $formattedOrderId = '#' . str_pad($nextOrderNumber, 4, '0', STR_PAD_LEFT);
+
         $order = Order::create([
             'user_id' => auth()->user()->id,
-            'products' => $products, // Disimpan dalam format JSON
-            'name' => auth()->user()->name
+            'products' => json_encode($orderItems), // Store as JSON
+            'name' => auth()->user()->name,
+            'total_price' => $totalPrice,
+            'image' => $product->image,
+            'order_id' => $formattedOrderId
         ]);
 
+        // Update product stock using selected products
         foreach ($orderItems as $item) {
-            $product = Product::find($item->product_id);
-            if ($product) {
-                $product->stock -= $item->kty;
-                $product->save();
-            }
+            $product = Product::find($item['product_id']);
+            if (!$product) continue;
+            $product->stock -= $item['quantity'];
+            $product->save();
         }
 
-        // Hapus semua data di tabel Payment setelah order berhasil dibuat
-        Payment::truncate();
+        // Delete selected items from Payment table
+        Payment::whereIn('id', $selectedProducts)->delete();
 
-        // Redirect ke halaman order detail
-        return redirect()->route('order.order_page1', ['id' => $order->id])->with('success', 'Order Berhasil');
+        // Redirect to order detail page
+        return redirect()->route('order.order_page1', ['id' => $order->id])->with('success', 'Order successful');
     }
 
     /**
@@ -76,7 +97,8 @@ class OrderController extends Controller
     public function show($id)
     {
         $order = Order::find($id);
-        return view('order.kasir.order', compact('order'));
+        $products = json_decode($order->products, true);
+        return view('order.kasir.order', compact('order', 'products'));
     }
 
     /**

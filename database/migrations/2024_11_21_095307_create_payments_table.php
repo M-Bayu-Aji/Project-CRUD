@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('price');
             $table->integer('kty');
             $table->integer('total');
+            $table->string('image');
             $table->timestamps();
         });
     }
