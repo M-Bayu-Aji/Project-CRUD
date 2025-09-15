@@ -53,13 +53,13 @@
                 Sign In
             </button>
         </form>
-
-        <!-- Register Link -->
-        <div class="mt-6 text-center">
+        
+        <div class="mt-6 text-center flex flex-col">
             <p class="text-sm text-gray-600">
                 Belum punya akun?
                 <a href="/register" class="text-blue-500 hover:underline">Register Sekarang</a>
             </p>
+            <a href="/forgot-password" class="text-blue-500 hover:underline">Forgot Password?</a>
         </div>
     </div>
 @endsection

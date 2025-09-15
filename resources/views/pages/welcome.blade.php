@@ -148,28 +148,28 @@
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <script>
-            function showModalDelete(id, name) {
-                // memasukkan teks dari parameter ke html bagian id = 'nama_karyawan'
-                $('#nama_karyawan').text(name);
-                // memanggil route hapus
-                let url = "{{ route('karyawan.delete_karyawan', ':id') }}";
-                // isi path dinamis : id dari data parameter id
-                url = url.replace(':id', id);
-                // action="" di form diisi dengan url diatas
-                $('form').attr('action', url);
-                // memunculkan modal dengan id='exampleModal'
-                $('#exampleModal').modal('show');
-            }
+            // function showModalDelete(id, name) {
+            //     // memasukkan teks dari parameter ke html bagian id = 'nama_karyawan'
+            //     $('#nama_karyawan').text(name);
+            //     // memanggil route hapus
+            //     let url = "";
+            //     // isi path dinamis : id dari data parameter id
+            //     url = url.replace(':id', id);
+            //     // action="" di form diisi dengan url diatas
+            //     $('form').attr('action', url);
+            //     // memunculkan modal dengan id='exampleModal'
+            //     $('#exampleModal').modal('show');
+            // }
 
-            // Tambahkan script untuk alert auto-close
-            $(document).ready(function() {
-                // Otomatis close alert setelah 5 detik
-                window.setTimeout(function() {
-                    $(".alert").fadeTo(500, 0).slideUp(500, function() {
-                        $(this).remove();
-                    });
-                }, 5000);
-            });
+            // // Tambahkan script untuk alert auto-close
+            // $(document).ready(function() {
+            //     // Otomatis close alert setelah 5 detik
+            //     window.setTimeout(function() {
+            //         $(".alert").fadeTo(500, 0).slideUp(500, function() {
+            //             $(this).remove();
+            //         });
+            //     }, 5000);
+            // });
         </script>
     @endpush
 @endsection

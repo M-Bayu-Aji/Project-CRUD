@@ -19,7 +19,8 @@ class AdminController extends Controller
     {
         $product = Product::all();
         $karyawan = Karyawan::all();
-        $pesanan = Order::all();
+        $pesanan = Order::simplePaginate(5);
+        
         $users = User::has('ordersPayment')->get();
         $totalSold = Order::all()
             ->flatMap(function ($order) {

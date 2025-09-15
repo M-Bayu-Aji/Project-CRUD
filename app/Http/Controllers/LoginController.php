@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
+use Illuminate\Support\Facades\Password;
 
 class LoginController extends Controller
 {
@@ -45,11 +46,11 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            
+
             if (Auth::user()->role == 'admin') {
                 return redirect()->intended('/admin/dashboard');
             }
-            
+
             return redirect()->intended('/welcome');
         }
 
@@ -60,5 +61,18 @@ class LoginController extends Controller
     {
         Auth::logout();
         return redirect()->route('login')->with('logout', 'Anda telah logout!');
+    }
+
+    public function forgotPassword(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        return $status === Password::ResetLinkSent
+            ? back()->with(['status' => __($status)])
+            : back()->withErrors(['email' => __($status)]);
     }
 }

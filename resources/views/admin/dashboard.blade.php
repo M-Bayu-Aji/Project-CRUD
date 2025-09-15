@@ -107,7 +107,8 @@
                                     class="bg-green-100 text-green-600 px-2 py-1 rounded-full text-xs md:text-sm">Complete</span>
                             </td>
                             <td class="py-4 text-right">
-                                <a href="{{ route('admin.detail_payment', $order->id) }}" class="text-gray-500 hover:text-indigo-600 mr-3">
+                                <a href="{{ route('admin.detail_payment', $order->id) }}"
+                                    class="text-gray-500 hover:text-indigo-600 mr-3">
                                     <i class="fas fa-eye"></i>
                                 </a>
                                 <button class="text-gray-500 hover:text-red-600">
@@ -118,6 +119,9 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="mt-6 flex items-center justify-end">
+                <div class="gap-4">{{ $pesanan->links('vendor.pagination.tailwind') }}</div>
+            </div>
         </div>
     </section>
 @endsection

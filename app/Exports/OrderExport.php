@@ -10,10 +10,10 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 
 class OrderExport implements FromCollection, WithHeadings, WithMapping
 {
-    private $no = 0;
-    private $date;
+    private int $no = 0;
+    private ?string $date;
 
-    public function __construct($date = null)
+    public function __construct(?string $date = null)
     {
         $this->date = $date;
     }
@@ -23,7 +23,7 @@ class OrderExport implements FromCollection, WithHeadings, WithMapping
         $query = Order::with('user');
 
         if ($this->date) {
-            $query->whereDate('created_at', $this->date);
+            $query->whereDate('created_at', Carbon::parse($this->date));
         }
 
         return $query->get();
@@ -36,6 +36,7 @@ class OrderExport implements FromCollection, WithHeadings, WithMapping
     {
         return [
             'No',
+            'Order ID',
             'Nama',
             'Pesanan',
             'Total Harga',
@@ -44,20 +45,26 @@ class OrderExport implements FromCollection, WithHeadings, WithMapping
     }
 
     /**
-     * @param mixed $row
+     * @param Order $order
      * @return array
      */
     public function map($order): array
-    {   
+    {
         $this->no++;
-        
+
+        $products = json_decode($order->products, true) ?? [];
+        $productDetails = collect($products)->map(function ($product) {
+            return $product['name'] . ' : ' . ($product['qty'] ?? 0);
+        })->implode(', ');
+
+        $totalPrice = collect($products)->sum('total') ?? 0;
+
         return [
             $this->no,
-            $order->user->name,
-            collect($order->products)->map(function ($product) {
-                return $product['name'] . ' : ' . $product['kty'];
-            })->implode(', '),
-            collect($order->products)->sum('total'),
+            $order->order_id,
+            $order->user->name ?? 'N/A',
+            $productDetails,
+            $totalPrice,
             Carbon::parse($order->created_at)->locale('id')->isoFormat('dddd, D MMMM Y - H:mm:ss'),
         ];
     }

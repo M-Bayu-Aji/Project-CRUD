@@ -72,7 +72,7 @@
                             @endphp
 
                             <p class="text-gray-600">
-                                <strong>Order ID:</strong> #{{ $payments['id'] }}
+                                <strong>Order ID:</strong> {{ $payments['order_id'] }}
                             </p>
                             <p class="text-gray-600">
                                 <strong>Order Date:</strong>

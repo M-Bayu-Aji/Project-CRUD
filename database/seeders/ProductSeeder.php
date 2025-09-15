@@ -14,8 +14,8 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         Product::create([
-            'name' => 'Sepatu Ortus Seight',
-            'price' => 300000,
+            'name' => 'Sendal',
+            'price' => 35000,
             'stock' => 100,
             'image' => 'img/sendalEdit.jpeg'
         ]);

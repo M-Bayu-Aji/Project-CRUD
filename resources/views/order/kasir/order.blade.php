@@ -34,6 +34,7 @@
         <table class="w-full border-collapse border border-gray-200">
             <thead>
                 <tr class="bg-gray-100">
+                    <th class="border border-gray-200 text-left px-4 py-2 font-medium text-gray-700">Order ID</th>
                     <th class="border border-gray-200 text-left px-4 py-2 font-medium text-gray-700">Product Name</th>
                     <th class="border border-gray-200 text-left px-4 py-2 font-medium text-gray-700">kty</th>
                     <th class="border border-gray-200 text-left px-4 py-2 font-medium text-gray-700">Price (per unit)
@@ -49,6 +50,7 @@
                         $grandTotal += $totalPrice;
                     @endphp
                     <tr class="hover:bg-gray-50">
+                        <td class="border border-gray-200 px-4 py-2 text-gray-600">{{ $order->order_id }}</td>
                         <td class="border border-gray-200 px-4 py-2 text-gray-600">{{ $product['name'] }}</td>
                         <td class="border border-gray-200 px-4 py-2 text-gray-600">{{ $product['quantity'] }}</td>
                         <td class="border border-gray-200 px-4 py-2 text-gray-600">Rp

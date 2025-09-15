@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\OrderExport;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index() {
-        $pesanan = Order::all();
+    public function index()
+    {
+        $pesanan = Order::simplePaginate(5);
         return view('admin.orders', compact('pesanan'), [
             'title' => 'Orders'
         ]);
@@ -61,7 +64,7 @@ class OrderController extends Controller
         }
 
         $totalPrice = array_sum(array_column($orderItems, 'total'));
-        
+
         $lastOrder = Order::latest()->first();
         $nextOrderNumber = $lastOrder ? intval(substr($lastOrder->order_id, 1)) + 1 : 1;
         $formattedOrderId = '#' . str_pad($nextOrderNumber, 4, '0', STR_PAD_LEFT);
@@ -98,31 +101,18 @@ class OrderController extends Controller
     {
         $order = Order::find($id);
         $products = json_decode($order->products, true);
+        
         return view('order.kasir.order', compact('order', 'products'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Order $order)
+    public function exportExcel()
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Order $order)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
-    {
-        //
+        $orders = 'Data Pesanan.xlsx';
+        $hasOrders = Order::count();
+        if ($hasOrders === 0) {
+            return back()->with('error', 'No data found');
+        }
+        return Excel::download(new OrderExport, $orders);
     }
 
     public function createPDF($id)

@@ -71,6 +71,13 @@
                                     <ul
                                         class="dropdown-menu absolute hidden mt-2 w-48 bg-white rounded-md shadow ring-1 ring-black ring-opacity-5 focus:outline-none">
                                         <li>
+                                            <a href="{{ route('profile') }}"
+                                                class="dropdown-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 flex items-center space-x-2">
+                                                <i class="bi bi-person"></i>
+                                                <span>Profile</span>
+                                            </a>
+                                        </li>
+                                        <li>
                                             <form action="/logout" method="post" class="w-full">
                                                 @csrf
                                                 <button type="submit"

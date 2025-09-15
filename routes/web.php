@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OrderController;
@@ -19,9 +21,19 @@ Route::middleware(['IsLogout'])->group(function () {
     Route::post('/login', [LoginController::class, 'authenticate']);
 });
 
+// route untuk Formulir Permintaan Tautan Reset Kata Sandi
+Route::middleware('guest')->group(function () {
+    Route::get('/forgot-password', function () {
+        return view('pages.forgot-password', [
+            'title' => 'Forgot Password'
+        ]);
+    })->name('forgotPassword');
+    Route::post('/forgot-password', [LoginController::class, 'forgotPassword'])->name('ForgotPassword');
+});
+
 Route::middleware(['IsLogin'])->group(function () {
     Route::get('/welcome', function () {
-        $role = auth()->user()->role;
+        $role = Auth::user()->role;
         if ($role == 'admin') {
             return app(AdminController::class)->index();
         } else {
@@ -51,14 +63,14 @@ Route::middleware(['IsLogin'])->group(function () {
         Route::delete('/hapus-product/{id}', [ProductController::class, 'destroy'])->name('hapus_product');
     });
 
-    Route::prefix('/karyawan')->name('karyawan.')->group(function () {
-        Route::get('list-karyawan', [KaryawanController::class, 'index'])->name('karyawan_page');
-        Route::get('/add-karyawan', [KaryawanController::class, 'create'])->name('add_karyawan');
-        Route::post('/add-karyawan-page', [KaryawanController::class, 'store'])->name('add_karyawan_page');
-        Route::get('/edit-karyawan/{id}', [KaryawanController::class, 'edit'])->name('edit_karyawan_page');
-        Route::patch('/update-karyawan/{id}', [KaryawanController::class, 'update'])->name('edit_karyawan_proses');
-        Route::delete('/delete-karyawan/{id}', [KaryawanController::class, 'destroy'])->name('delete_karyawan');
-    });
+    // Route::prefix('/karyawan')->name('karyawan.')->group(function () {
+    //     Route::get('list-karyawan', [KaryawanController::class, 'index'])->name('karyawan_page');
+    //     Route::get('/add-karyawan', [KaryawanController::class, 'create'])->name('add_karyawan');
+    //     Route::post('/add-karyawan-page', [KaryawanController::class, 'store'])->name('add_karyawan_page');
+    //     Route::get('/edit-karyawan/{id}', [KaryawanController::class, 'edit'])->name('edit_karyawan_page');
+    //     Route::patch('/update-karyawan/{id}', [KaryawanController::class, 'update'])->name('edit_karyawan_proses');
+    //     Route::delete('/delete-karyawan/{id}', [KaryawanController::class, 'destroy'])->name('delete_karyawan');
+    // });
 
     Route::prefix('/payment')->name('payment.')->group(function () {
         Route::get('/payment-page', [PaymentController::class, 'index'])->name('payment_page');
@@ -74,7 +86,14 @@ Route::middleware(['IsLogin'])->group(function () {
         Route::get('/order-page/{id}', [OrderController::class, 'show'])->name('order_page1');
         Route::post('/order-page', [OrderController::class, 'store'])->name('order_page2');
         Route::get('/download/{id}', [OrderController::class, 'createPDF'])->name('download_pdf');
+        Route::get('/order/export', [OrderController::class, 'exportExcel'])->name('export');
     });
+
+    Route::get('/profile', function () {
+        return view('pages.profile', [
+            'title' => 'Profile'
+        ]);
+    })->name('profile');
 });
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
