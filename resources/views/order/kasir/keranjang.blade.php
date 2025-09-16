@@ -1,146 +1,238 @@
 @extends('templates.app')
 
 @section('container-content')
-    <div class="container mx-auto px-4 pt-10 pb-72 bg-white">
-        @if (Session::get('success'))
-            <div class="alert mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative flex justify-between items-center"
-                role="alert">
-                <span>{{ Session::get('success') }}</span>
-                <button type="button" class="btn-close ml-4" data-bs-dismiss="alert" aria-label="Close">
-                    <span class="text-xl"></span>
-                </button>
+    <div class="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
+        <!-- Header Section -->
+        <div class="px-4 py-8 mx-auto max-w-7xl">
+            <div class="mb-8 text-center">
+                <h1 class="mb-4 text-4xl font-bold text-transparent bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text">
+                    <i class="mr-3 text-blue-600 fas fa-shopping-cart"></i>Keranjang Belanja
+                </h1>
+                <p class="max-w-2xl mx-auto text-gray-600">
+                    Kelola produk favorit Anda sebelum melanjutkan ke pembayaran
+                </p>
+                <div class="w-24 h-1 mx-auto mt-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-500"></div>
             </div>
-        @endif
 
-        @if ($products->isEmpty())
-            <div class="flex flex-col items-center justify-center min-h-[400px] py-12 px-4 sm:px-6 lg:px-8">
-                <div class="max-w-md w-full space-y-8 text-center">
-                    <img class="mx-auto h-32 w-32 object-contain transition-transform duration-300 "
-                        src="https://storage.googleapis.com/a1aa/image/BFKPsbDrBHKEFpT0bKk6s9MufODlk56DIIO8fkeBtr4UquRoA.jpg"
-                        alt="Empty Shopping Cart" loading="lazy">
-                    <div class="space-y-4">
-                        <h1 class=" font-bold text-gray-900 sm:text-xl">
-                            Keranjang Belanjamu Kosong
-                        </h1>
-                        <p class="text-gray-600 text-sm max-w-sm mx-auto">
-                            Yuk, telusuri koleksi ThriftStore kami dan temukan barang impianmu!
-                        </p>
-                        <div class="mt-6">
-                            <a href="{{ route('payment.payment_page') }}"
-                                class="inline-flex items-center justify-center px-4 py-3 border-1 border-blue-600 
-                                      rounded-lg text-base font-medium text-blue-600 hover:text-white transition-all duration-200 
-                                      shadow-sm hover:bg-blue-600 ">
-                                <span>Mulai Belanja</span>
-                                <svg class="ml-2 -mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                </svg>
-                            </a>
+            @if (Session::get('success'))
+                <div class="relative flex items-center justify-between px-6 py-4 mb-6 text-green-700 border border-green-200 shadow-lg bg-green-50 rounded-2xl backdrop-blur-sm bg-white/80 alert animate-slideIn"
+                    role="alert">
+                    <div class="flex items-center">
+                        <i class="mr-3 text-xl text-green-500 fas fa-check-circle"></i>
+                        <span class="font-medium">{{ Session::get('success') }}</span>
+                    </div>
+                    <button type="button" class="ml-4 text-green-700 transition-colors hover:text-green-900 btn-close" data-bs-dismiss="alert" aria-label="Close">
+                        <i class="text-lg fas fa-times"></i>
+                    </button>
+                </div>
+            @endif
+
+            @if ($products->isEmpty())
+                <div class="flex flex-col items-center justify-center min-h-[500px] py-16 px-4">
+                    <div class="w-full max-w-lg space-y-8 text-center">
+                        <!-- Empty Cart Animation -->
+                        <div class="relative animate-float">
+                            <div class="flex items-center justify-center w-32 h-32 mx-auto rounded-full shadow-xl bg-gradient-to-br from-blue-100 to-purple-100">
+                                <i class="text-6xl text-gray-400 fas fa-shopping-cart"></i>
+                            </div>
+                            <div class="absolute flex items-center justify-center w-8 h-8 bg-red-500 rounded-full -top-2 -right-2 animate-pulse">
+                                <i class="text-sm text-white fas fa-exclamation"></i>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <h1 class="text-3xl font-bold text-gray-800">
+                                Keranjang Belanjamu Kosong
+                            </h1>
+                            <p class="max-w-sm mx-auto text-lg leading-relaxed text-gray-600">
+                                Yuk, telusuri koleksi ThriftStore kami dan temukan barang impianmu!
+                            </p>
+                            <div class="mt-8">
+                                <a href="{{ route('payment.payment_page') }}"
+                                    class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white transition-all duration-300 shadow-xl group bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl hover:shadow-2xl hover:scale-105 hover:-translate-y-1">
+                                    <i class="mr-3 fas fa-store group-hover:animate-bounce"></i>
+                                    <span>Mulai Belanja</span>
+                                    <i class="ml-3 transition-transform duration-300 fas fa-arrow-right group-hover:translate-x-1"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        @else
-            <form action="{{ route('order.order_page2') }}" method="POST">
+            @else
+            <form action="{{ route('order.order_page2') }}" method="POST" class="mx-auto max-w-7xl">
                 @csrf
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div class="grid grid-cols-1 gap-8 xl:grid-cols-12">
                     <!-- Cart Items Section -->
-                    <div class="lg:col-span-8">
-                        @foreach ($products as $product)
-                            <div class="bg-white rounded-lg shadow-sm p-4 md:p-6" data-price="{{ $product->price }}"
-                                data-id="{{ $product->id }}" data-name="{{ $product->name }}">
-                                <div
-                                    class="flex flex-col sm:flex-row shadow-md p-3 items-start sm:items-center gap-4 border-b border-gray-200 pb-6   relative">
-                                    <div class="flex items-center gap-4 p-2.5 w-full sm:w-auto">
-                                        <input type="checkbox" class="item-checkbox w-5 h-5" name="selected_products[]"
-                                            value="{{ $product->id }}">
-                                        <div
-                                            class="w-1/2 mx-auto sm:w-24 sm:h-24 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
-                                            <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
-                                                class="w-full h-full object-cover">
-                                        </div>
-                                    </div>
-
-                                    <div class="flex-1 space-y-2">
-                                        <div class="flex w-44">
-                                            <h5 class="font-semibold text-gray-800 text-sm">{{ $product->name }}</h5>
-                                        </div>
-                                        <div class="flex items-center gap-2">
-                                            <span class="text-sm font-medium text-gray-600">
-                                                Rp {{ number_format($product->price, 0, '.', '.') }}
-                                            </span>
-                                        </div>
-                                        <div class="hidden sm:block">
-                                            <span
-                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                Tersedia
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    <div
-                                        class="flex items-center gap-6 sm:gap-8 w-full sm:w-auto justify-between sm:justify-end">
-                                        <div class="flex items-center gap-3 border rounded-lg p-1">
-                                            <button type="button"
-                                                class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded decrement">
-                                                <i class="fas fa-minus w-3 h-3"></i>
-                                            </button>
-                                            <input type="number" class="w-12 text-center font-medium quantity"
-                                                name="quantity[{{ $product->id }}]" value="1" min="1"
-                                                max="999">
-                                            <button type="button"
-                                                class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded increment">
-                                                <i class="fas fa-plus w-3 h-3"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <button type="button"
-                                        class="btn-delete bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition-colors flex items-center gap-2"
-                                        data-id="{{ $product->id }}">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                        </svg>
-                                        Hapus
-                                    </button>
-                                </div>
+                    <div class="space-y-6 xl:col-span-8">
+                        <div class="p-8 border shadow-xl bg-white/80 backdrop-blur-sm rounded-3xl border-white/20">
+                            <div class="flex items-center justify-between mb-8">
+                                <h2 class="text-2xl font-bold text-gray-800">
+                                    <i class="mr-3 text-blue-600 fas fa-list-ul"></i>Produk dalam Keranjang
+                                </h2>
+                                <span class="px-4 py-2 font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl">
+                                    {{ count($products) }} Items
+                                </span>
                             </div>
-                        @endforeach
+
+                            <div class="space-y-6">
+                                @foreach ($products as $product)
+                                    <div class="p-6 transition-all duration-300 bg-white border border-gray-100 shadow-lg group rounded-2xl hover:shadow-xl hover:-translate-y-1"
+                                         data-price="{{ $product->price }}" data-id="{{ $product->id }}" data-name="{{ $product->name }}">
+                                        <div class="flex flex-col gap-6 lg:flex-row lg:items-center">
+                                            <!-- Checkbox and Image -->
+                                            <div class="flex items-center gap-4">
+                                                <div class="relative">
+                                                    <input type="checkbox"
+                                                           class="relative z-10 w-5 h-5 text-blue-600 transition-all duration-300 bg-gray-100 border-gray-300 rounded item-checkbox focus:ring-blue-500 focus:ring-2"
+                                                           name="selected_products[]" value="{{ $product->id }}">
+                                                    <div class="absolute inset-0 transition-opacity duration-300 bg-blue-500 rounded opacity-0 pointer-events-none group-hover:opacity-20"></div>
+                                                </div>
+                                                <div class="relative w-24 h-24 overflow-hidden shadow-lg bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl lg:w-28 lg:h-28">
+                                                    <img src="{{ asset($product->image) }}"
+                                                         alt="{{ $product->name }}"
+                                                         class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110">
+                                                    <div class="absolute inset-0 transition-opacity duration-300 opacity-0 bg-gradient-to-t from-black/20 to-transparent group-hover:opacity-100"></div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Product Info -->
+                                            <div class="flex-1 space-y-3">
+                                                <div>
+                                                    <h3 class="text-xl font-bold text-gray-800 transition-colors duration-300 group-hover:text-blue-600">
+                                                        {{ $product->name }}
+                                                    </h3>
+                                                    <div class="flex items-center gap-3 mt-2">
+                                                        <span class="text-lg font-semibold text-gray-700">
+                                                            Rp {{ number_format($product->price, 0, '.', '.') }}
+                                                        </span>
+                                                        <span class="inline-flex items-center px-3 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full">
+                                                            <i class="mr-1 fas fa-check-circle"></i>Tersedia
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="text-lg font-bold text-blue-600 subtotal">
+                                                    Subtotal: Rp {{ number_format($product->price, 0, '.', '.') }}
+                                                </div>
+                                            </div>
+
+                                            <!-- Quantity Controls -->
+                                            <div class="flex items-center justify-between gap-4 lg:justify-end">
+                                                <div class="flex items-center gap-3 p-2 border border-gray-200 bg-gray-50 rounded-2xl">
+                                                    <button type="button"
+                                                        class="flex items-center justify-center w-10 h-10 transition-all duration-300 bg-white border border-gray-300 shadow-sm decrement rounded-xl hover:bg-red-50 hover:border-red-300 hover:text-red-600">
+                                                        <i class="text-sm fas fa-minus"></i>
+                                                    </button>
+                                                    <input type="number"
+                                                           class="w-16 text-lg font-bold text-center bg-transparent border-none quantity focus:outline-none focus:ring-0"
+                                                           name="quantity[{{ $product->id }}]"
+                                                           value="1" min="1" max="999">
+                                                    <button type="button"
+                                                        class="flex items-center justify-center w-10 h-10 transition-all duration-300 bg-white border border-gray-300 shadow-sm increment rounded-xl hover:bg-green-50 hover:border-green-300 hover:text-green-600">
+                                                        <i class="text-sm fas fa-plus"></i>
+                                                    </button>
+                                                </div>
+
+                                                <button type="button"
+                                                    class="flex items-center gap-2 px-4 py-2 text-white transition-all duration-300 shadow-lg btn-delete bg-gradient-to-r from-red-500 to-red-600 rounded-xl hover:from-red-600 hover:to-red-700 hover:scale-105"
+                                                    data-id="{{ $product->id }}">
+                                                    <i class="text-sm fas fa-trash"></i>
+                                                    <span class="hidden sm:inline">Hapus</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Summary Section -->
-                    <div class="lg:col-span-4">
-                        <div class="bg-white rounded-lg shadow-sm p-6 lg:sticky lg:top-8">
-                            <h2 class="text-xl font-bold mb-4">Ringkasan Belanja</h2>
-
-                            <div class="space-y-3 mb-6">
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">Total Barang</span>
-                                    <span id="totalItems">0 items</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">Total Harga</span>
-                                    <span class="font-medium" id="totalPrice">Rp 0</span>
-                                </div>
+                    <div class="xl:col-span-4">
+                        <div class="sticky p-8 border shadow-xl bg-white/80 backdrop-blur-sm rounded-3xl border-white/20 top-8">
+                            <div class="mb-8 text-center">
+                                <h2 class="mb-2 text-2xl font-bold text-gray-800">
+                                    <i class="mr-3 text-purple-600 fas fa-receipt"></i>Ringkasan Belanja
+                                </h2>
+                                <div class="h-0.5 w-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mx-auto"></div>
                             </div>
 
-                            <!-- Tombol Hapus yang Dipilih -->
-                            <button type="button" id="deleteSelectedItems"
-                                class="w-full bg-red-500 text-white py-3 rounded-lg font-medium hover:bg-red-600 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 mb-4">
-                                Hapus <span id="totalSelectedItems"></span>
-                            </button>
+                            <div class="mb-8 space-y-6">
+                                <!-- Total Items -->
+                                <div class="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl">
+                                    <div class="flex items-center">
+                                        <div class="flex items-center justify-center w-10 h-10 mr-3 bg-blue-500 rounded-xl">
+                                            <i class="text-white fas fa-shopping-bag"></i>
+                                        </div>
+                                        <span class="font-medium text-gray-700">Total Barang</span>
+                                    </div>
+                                    <span id="totalItems" class="text-xl font-bold text-blue-600 transition-all duration-300">0 items</span>
+                                </div>
 
-                            <button type="submit"
-                                class="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                                id="checkout" disabled>
-                                Lanjut ke Pembayaran
-                            </button>
+                                <!-- Total Price -->
+                                <div class="flex items-center justify-between p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl">
+                                    <div class="flex items-center">
+                                        <div class="flex items-center justify-center w-10 h-10 mr-3 bg-green-500 rounded-xl">
+                                            <i class="text-white fas fa-money-bill-wave"></i>
+                                        </div>
+                                        <span class="font-medium text-gray-700">Total Harga</span>
+                                    </div>
+                                    <span class="text-xl font-bold text-green-600 transition-all duration-300" id="totalPrice">Rp 0</span>
+                                </div>
+
+                                <!-- Discount Info -->
+                                {{-- <div class="p-4 border border-yellow-200 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-2xl">
+                                    <div class="flex items-center">
+                                        <i class="mr-3 text-yellow-600 fas fa-tag"></i>
+                                        <div>
+                                            <p class="text-sm font-medium text-yellow-800">Promo Tersedia!</p>
+                                            <p class="text-xs text-yellow-700">Gratis ongkir untuk pembelian > Rp 100.000</p>
+                                        </div>
+                                    </div>
+                                </div> --}}
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="space-y-4">
+                                <!-- Delete Selected Button -->
+                                <button type="button" id="deleteSelectedItems"
+                                    class="w-full py-4 font-semibold text-white transition-all duration-300 group bg-gradient-to-r from-red-500 to-red-600 rounded-2xl hover:from-red-600 hover:to-red-700 hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-red-500/25">
+                                    <span class="flex items-center justify-center">
+                                        <i class="mr-2 fas fa-trash group-hover:animate-bounce"></i>
+                                        Hapus <span id="totalSelectedItems"></span>
+                                    </span>
+                                </button>
+
+                                <!-- Checkout Button -->
+                                <button type="submit"
+                                    class="w-full py-4 font-semibold text-white transition-all duration-300 group bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl hover:from-blue-700 hover:to-purple-700 hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-500/25"
+                                    id="checkout" disabled>
+                                    <span class="flex items-center justify-center">
+                                        <i class="mr-2 fas fa-credit-card group-hover:animate-pulse"></i>
+                                        Lanjut ke Pembayaran
+                                        <i class="ml-2 transition-transform duration-300 fas fa-arrow-right group-hover:translate-x-1"></i>
+                                    </span>
+                                </button>
+
+                                <!-- Continue Shopping -->
+                                <a href="{{ route('payment.payment_page') }}"
+                                   class="block w-full py-3 font-medium text-center text-gray-700 transition-all duration-300 bg-gray-100 hover:bg-gray-200 rounded-2xl hover:scale-105">
+                                    <i class="mr-2 fas fa-store"></i>
+                                    Lanjut Belanja
+                                </a>
+                            </div>
+
+                            <!-- Security Badge -->
+                            <div class="p-3 mt-6 text-center bg-gray-50 rounded-2xl">
+                                <div class="flex items-center justify-center text-sm text-gray-600">
+                                    <i class="mr-2 text-green-500 fas fa-shield-alt"></i>
+                                    Pembayaran aman & terpercaya
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </form>
+            @endif
             @foreach ($products as $product)
                 <form id="delete-form-{{ $product->id }}" action="{{ route('payment.delete_payment', $product->id) }}"
                     method="POST" class="inline-block">
@@ -148,13 +240,112 @@
                     @method('DELETE')
                 </form>
             @endforeach
-            <form id="deleteSelectedForm" action="{{ route('payment.delete_selected') }}" method="POST" class="hidden">
+            <form id="deleteSelectedForm" action="{{ route('payment.delete_selected') }}" method="POST"
+                class="hidden">
                 @csrf
                 @method('DELETE')
                 <input type="hidden" name="selected_items" id="selectedItemsInput">
             </form>
-        @endif
+        </div>
     </div>
+
+    <!-- Custom Styles and Animations -->
+    <style>
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .animate-slideIn {
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #6366f1, #8b5cf6);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, #4f46e5, #7c3aed);
+        }
+
+        /* Button disabled state */
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Loading animation for quantity changes */
+        .quantity-loading {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        /* Smooth transitions for all interactive elements */
+        .transition-all {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Hover effects for cards */
+        .group:hover .group-hover\:scale-110 {
+            transform: scale(1.1);
+        }
+    </style>
 @endsection
 
 @push('script')
@@ -164,116 +355,147 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        // Tambahkan script untuk alert auto-close
+        // Enhanced auto-close alerts with animation
         $(document).ready(function() {
-            // Otomatis close alert setelah 5 detik
             window.setTimeout(function() {
-                $(".alert").fadeTo(500, 0).slideUp(500, function() {
-                    $(this).remove();
+                $(".alert").addClass('opacity-0 transform -translate-y-2').delay(300).queue(function() {
+                    $(this).slideUp(500, function() {
+                        $(this).remove();
+                    });
                 });
             }, 5000);
         });
 
         document.addEventListener("DOMContentLoaded", function() {
+            // Enhanced delete button functionality with modern SweetAlert
             document.querySelectorAll(".btn-delete").forEach(button => {
                 button.addEventListener("click", function() {
                     let id = this.getAttribute("data-id");
                     Swal.fire({
-                        title: "Are you sure?",
-                        text: "You won't be able to revert this!",
+                        title: "Hapus Item?",
+                        text: "Item ini akan dihapus dari keranjang belanja Anda",
                         icon: "warning",
                         showCancelButton: true,
-                        confirmButtonColor: "#3085d6",
-                        cancelButtonColor: "#d33",
-                        confirmButtonText: "Yes, delete it!",
+                        confirmButtonColor: "#ef4444",
+                        cancelButtonColor: "#6b7280",
+                        confirmButtonText: "Ya, Hapus!",
+                        cancelButtonText: "Batal",
+                        background: '#ffffff',
+                        backdrop: 'rgba(0,0,0,0.4)',
                         customClass: {
-                            title: 'font-sans',
-                            content: 'font-sans',
-                            confirmButton: 'font-sans',
-                            cancelButton: 'font-sans'
-                        }
+                            popup: 'rounded-3xl shadow-2xl',
+                            title: 'text-2xl font-bold text-gray-800',
+                            content: 'text-gray-600',
+                            confirmButton: 'px-6 py-3 rounded-2xl font-semibold',
+                            cancelButton: 'px-6 py-3 rounded-2xl font-semibold'
+                        },
+                        buttonsStyling: false
                     }).then((result) => {
                         if (result.isConfirmed) {
+                            // Add loading effect to the button
+                            this.innerHTML = '<i class="mr-2 fas fa-spinner fa-spin"></i>Menghapus...';
+                            this.disabled = true;
+
                             Swal.fire({
-                                title: "Deleted!",
-                                text: "Your file has been deleted.",
+                                title: "Berhasil!",
+                                text: "Item telah dihapus dari keranjang",
                                 icon: "success",
+                                timer: 1500,
+                                showConfirmButton: false,
+                                background: '#ffffff',
                                 customClass: {
-                                    title: 'font-sans',
-                                    content: 'font-sans',
-                                    confirmButton: 'font-sans'
+                                    popup: 'rounded-3xl shadow-2xl',
+                                    title: 'text-2xl font-bold text-gray-800'
                                 }
                             });
-                            // Add 2 second delay before form submission
+
+                            // Submit form after delay
                             setTimeout(() => {
-                                document.getElementById(`delete-form-${id}`)
-                                    .submit();
+                                document.getElementById(`delete-form-${id}`).submit();
                             }, 500);
                         }
                     });
                 });
             });
 
-            // Fungsi untuk menghapus item yang dipilih
+            // Enhanced delete selected items functionality
             document.getElementById('deleteSelectedItems').addEventListener('click', function() {
                 const selectedItems = document.querySelectorAll('.item-checkbox:checked');
                 if (selectedItems.length === 0) {
                     Swal.fire({
                         title: "Tidak ada item yang dipilih",
-                        text: "Silakan pilih item yang ingin dihapus.",
-                        icon: "warning",
+                        text: "Silakan pilih item yang ingin dihapus terlebih dahulu",
+                        icon: "info",
+                        confirmButtonColor: "#3b82f6",
+                        background: '#ffffff',
                         customClass: {
-                            title: 'font-sans',
-                            content: 'font-sans',
-                            confirmButton: 'font-sans'
-                        }
+                            popup: 'rounded-3xl shadow-2xl',
+                            title: 'text-2xl font-bold text-gray-800',
+                            content: 'text-gray-600',
+                            confirmButton: 'px-6 py-3 rounded-2xl font-semibold'
+                        },
+                        buttonsStyling: false
                     });
                     return;
                 }
 
                 Swal.fire({
-                    title: "Apakah Anda yakin?",
-                    text: "Item yang dipilih akan dihapus dari keranjang.",
+                    title: `Hapus ${selectedItems.length} Item?`,
+                    text: "Item yang dipilih akan dihapus dari keranjang belanja",
                     icon: "warning",
                     showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Ya, hapus!",
+                    confirmButtonColor: "#ef4444",
+                    cancelButtonColor: "#6b7280",
+                    confirmButtonText: "Ya, Hapus Semua!",
+                    cancelButtonText: "Batal",
+                    background: '#ffffff',
+                    backdrop: 'rgba(0,0,0,0.4)',
                     customClass: {
-                        title: 'font-sans',
-                        content: 'font-sans',
-                        confirmButton: 'font-sans',
-                        cancelButton: 'font-sans'
-                    }
+                        popup: 'rounded-3xl shadow-2xl',
+                        title: 'text-2xl font-bold text-gray-800',
+                        content: 'text-gray-600',
+                        confirmButton: 'px-6 py-3 rounded-2xl font-semibold',
+                        cancelButton: 'px-6 py-3 rounded-2xl font-semibold'
+                    },
+                    buttonsStyling: false
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Kumpulkan ID item yang dipilih
+                        // Add loading effect
+                        this.innerHTML = '<i class="mr-2 fas fa-spinner fa-spin"></i>Menghapus...';
+                        this.disabled = true;
+
+                        // Collect selected IDs
                         const selectedIds = [];
                         selectedItems.forEach(checkbox => {
-                            const itemId = checkbox.value;
-                            selectedIds.push(itemId);
+                            selectedIds.push(checkbox.value);
                         });
                         document.getElementById('selectedItemsInput').value = selectedIds.join(',');
-                        document.getElementById('deleteSelectedForm').submit();
 
-                        // Hapus item dari DOM setelah form di-submit
+                        // Add fade out animation to selected items
                         selectedItems.forEach(checkbox => {
                             const item = checkbox.closest('[data-price]');
-                            item.remove();
+                            item.style.transition = 'all 0.5s ease';
+                            item.style.opacity = '0';
+                            item.style.transform = 'translateX(-100px)';
                         });
 
-                        updateTotals();
+                        // Submit form and show success
+                        setTimeout(() => {
+                            document.getElementById('deleteSelectedForm').submit();
 
-                        Swal.fire({
-                            title: "Dihapus!",
-                            text: "Item yang dipilih telah dihapus.",
-                            icon: "success",
-                            customClass: {
-                                title: 'font-sans',
-                                content: 'font-sans',
-                                confirmButton: 'font-sans'
-                            }
-                        });
+                            Swal.fire({
+                                title: "Berhasil!",
+                                text: `${selectedItems.length} item telah dihapus`,
+                                icon: "success",
+                                timer: 1500,
+                                showConfirmButton: false,
+                                background: '#ffffff',
+                                customClass: {
+                                    popup: 'rounded-3xl shadow-2xl',
+                                    title: 'text-2xl font-bold text-gray-800'
+                                }
+                            });
+                        }, 600);
                     }
                 });
             });
@@ -283,6 +505,7 @@
             const paymentButton = document.querySelector('#checkout');
             const selectedButton = document.querySelector('#deleteSelectedItems');
 
+            // Enhanced number formatting
             function formatIDR(number) {
                 return new Intl.NumberFormat('id-ID', {
                     style: 'currency',
@@ -292,34 +515,58 @@
                 }).format(number);
             }
 
-            // Update subtotal for an item
+            // Enhanced subtotal update with animation
             function updateSubtotal(itemElement) {
                 const price = parseInt(itemElement.dataset.price);
                 const quantity = parseInt(itemElement.querySelector('.quantity').value);
                 const subtotal = price * quantity;
-                itemElement.querySelector('.subtotal').textContent = formatIDR(subtotal);
+                const subtotalElement = itemElement.querySelector('.subtotal');
+
+                // Add loading animation
+                subtotalElement.classList.add('quantity-loading');
+
+                setTimeout(() => {
+                    subtotalElement.textContent = `Subtotal: ${formatIDR(subtotal)}`;
+                    subtotalElement.classList.remove('quantity-loading');
+                    subtotalElement.classList.add('animate-pulse');
+                    setTimeout(() => subtotalElement.classList.remove('animate-pulse'), 500);
+                }, 300);
             }
 
+            // Enhanced button state management
             function checkSelectedItems() {
                 const checkboxes = document.querySelectorAll('.item-checkbox');
-                const isAnyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+                const checkedBoxes = Array.from(checkboxes).filter(checkbox => checkbox.checked);
+                const isAnyChecked = checkedBoxes.length > 0;
 
+                // Update button states with animations
                 paymentButton.disabled = !isAnyChecked;
                 selectedButton.disabled = !isAnyChecked;
+
                 if (isAnyChecked) {
-                    paymentButton.classList.remove('bg-gray-400');
-                    selectedButton.classList.remove('bg-gray-400');
-                    paymentButton.classList.add('bg-blue-600', 'hover:bg-blue-700');
-                    selectedButton.classList.add('bg-red-500', 'hover:bg-red-600');
+                    paymentButton.classList.remove('opacity-60', 'cursor-not-allowed');
+                    selectedButton.classList.remove('opacity-60', 'cursor-not-allowed');
+                    paymentButton.classList.add('hover:scale-105', 'hover:shadow-xl');
+                    selectedButton.classList.add('hover:scale-105', 'hover:shadow-xl');
                 } else {
-                    paymentButton.classList.remove('bg-blue-600', 'hover:bg-blue-700');
-                    selectedButton.classList.remove('bg-red-500', 'hover:bg-red-600');
-                    paymentButton.classList.add('bg-gray-400');
-                    selectedButton.classList.add('bg-gray-400');
+                    paymentButton.classList.add('opacity-60', 'cursor-not-allowed');
+                    selectedButton.classList.add('opacity-60', 'cursor-not-allowed');
+                    paymentButton.classList.remove('hover:scale-105', 'hover:shadow-xl');
+                    selectedButton.classList.remove('hover:scale-105', 'hover:shadow-xl');
+                }
+
+                // Update selected items text with animation
+                const selectedText = document.getElementById('totalSelectedItems');
+                if (checkedBoxes.length > 0) {
+                    selectedText.textContent = `(${checkedBoxes.length} items)`;
+                    selectedText.classList.add('animate-bounce');
+                    setTimeout(() => selectedText.classList.remove('animate-bounce'), 500);
+                } else {
+                    selectedText.textContent = '';
                 }
             }
 
-            // Update cart totals
+            // Enhanced totals calculation with smooth animations
             function updateTotals() {
                 const items = document.querySelectorAll('[data-price]');
                 let totalItems = 0;
@@ -334,67 +581,158 @@
                     }
                 });
 
-                document.getElementById('totalItems').textContent = `${totalItems} items`;
-                document.getElementById('totalSelectedItems').textContent = totalItems === 0 ? '' :
-                    `${totalItems} items`;
-                document.getElementById('totalPrice').textContent = formatIDR(totalPrice);
+                // Animate total updates
+                const totalItemsElement = document.getElementById('totalItems');
+                const totalPriceElement = document.getElementById('totalPrice');
+
+                totalItemsElement.style.transform = 'scale(1.1)';
+                totalPriceElement.style.transform = 'scale(1.1)';
+
+                setTimeout(() => {
+                    totalItemsElement.textContent = totalItems === 0 ? '0 items' : `${totalItems} items`;
+                    totalPriceElement.textContent = formatIDR(totalPrice);
+
+                    totalItemsElement.style.transform = 'scale(1)';
+                    totalPriceElement.style.transform = 'scale(1)';
+                }, 150);
+
                 checkSelectedItems();
             }
 
-            // Add event listeners to quantity inputs
+            // Enhanced quantity input handlers with better UX
             document.querySelectorAll('.quantity').forEach(input => {
-                // Update subtotal only when editing ends
-                input.addEventListener('blur', function() {
+                input.addEventListener('input', function() {
+                    let value = parseInt(this.value) || 1;
+                    const min = parseInt(this.getAttribute('min') || 1);
+                    const max = parseInt(this.getAttribute('max') || 999);
+
+                    if (value < min) value = min;
+                    if (value > max) value = max;
+
+                    this.value = value;
+
                     const item = this.closest('[data-price]');
                     updateSubtotal(item);
-                    updateTotals();
+
+                    if (item.querySelector('.item-checkbox').checked) {
+                        updateTotals();
+                    }
+                });
+
+                input.addEventListener('blur', function() {
+                    let value = parseInt(this.value) || 1;
+                    const min = parseInt(this.getAttribute('min') || 1);
+
+                    if (value < min) {
+                        this.value = min;
+                        const item = this.closest('[data-price]');
+                        updateSubtotal(item);
+
+                        if (item.querySelector('.item-checkbox').checked) {
+                            updateTotals();
+                        }
+                    }
+                });
+
+                input.addEventListener('keypress', function(e) {
+                    const charCode = e.which ? e.which : e.keyCode;
+                    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                        e.preventDefault();
+                        return false;
+                    }
+                    return true;
                 });
             });
 
-            // Add event listeners to increment buttons
+            // Enhanced increment/decrement with visual feedback
             document.querySelectorAll('.increment').forEach(button => {
                 button.addEventListener('click', function() {
                     const item = this.closest('[data-price]');
                     const quantityElement = item.querySelector('.quantity');
                     const currentQuantity = parseInt(quantityElement.value);
-                    quantityElement.value = currentQuantity + 1;
-                    updateSubtotal(item);
-                    updateTotals();
+                    const maxQuantity = parseInt(quantityElement.getAttribute('max') || 999);
+
+                    if (currentQuantity < maxQuantity) {
+                        this.classList.add('animate-pulse');
+                        setTimeout(() => this.classList.remove('animate-pulse'), 300);
+
+                        quantityElement.value = currentQuantity + 1;
+                        updateSubtotal(item);
+
+                        if (item.querySelector('.item-checkbox').checked) {
+                            updateTotals();
+                        }
+                    }
                 });
             });
 
-            // Add event listeners to decrement buttons
             document.querySelectorAll('.decrement').forEach(button => {
                 button.addEventListener('click', function() {
                     const item = this.closest('[data-price]');
                     const quantityElement = item.querySelector('.quantity');
                     const currentQuantity = parseInt(quantityElement.value);
-                    if (currentQuantity > 1) {
+                    const minQuantity = parseInt(quantityElement.getAttribute('min') || 1);
+
+                    if (currentQuantity > minQuantity) {
+                        this.classList.add('animate-pulse');
+                        setTimeout(() => this.classList.remove('animate-pulse'), 300);
+
                         quantityElement.value = currentQuantity - 1;
                         updateSubtotal(item);
-                        updateTotals();
+
+                        if (item.querySelector('.item-checkbox').checked) {
+                            updateTotals();
+                        }
                     }
                 });
             });
 
-            // Add event listeners to delete buttons
-            document.querySelectorAll('.delete-item').forEach(button => {
-                button.addEventListener('click', function() {
-                    const item = this.closest('[data-price]');
-                    item.remove();
-                    updateTotals();
-                });
-            });
-
-            // Add event listeners to checkboxes
+            // Enhanced checkbox interaction with visual feedback
             document.querySelectorAll('.item-checkbox').forEach(checkbox => {
                 checkbox.addEventListener('change', function() {
+                    const item = this.closest('[data-price]');
+
+                    if (this.checked) {
+                        item.classList.add('ring-2', 'ring-blue-500', 'bg-blue-50');
+                        item.style.transform = 'scale(1.02)';
+                    } else {
+                        item.classList.remove('ring-2', 'ring-blue-500', 'bg-blue-50');
+                        item.style.transform = 'scale(1)';
+                    }
+
+                    setTimeout(() => {
+                        item.style.transform = 'scale(1)';
+                    }, 200);
+
                     updateTotals();
                 });
             });
 
-            // Initial update of totals
+            // Initialize totals
             updateTotals();
+
+            // Add scroll animations for cart items
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe cart items for scroll animations
+            document.querySelectorAll('[data-price]').forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = `all 0.6s ease ${index * 0.1}s`;
+                observer.observe(el);
+            });
         });
     </script>
 @endpush

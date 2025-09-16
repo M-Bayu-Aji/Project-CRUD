@@ -52,7 +52,12 @@ class OrderExport implements FromCollection, WithHeadings, WithMapping
     {
         $this->no++;
 
-        $products = json_decode($order->products, true) ?? [];
+        // Pastikan data adalah string sebelum json_decode
+        if (!is_array($order->products)) {
+            $products = json_decode($order->products, true) ?? [];
+        } else {
+            $products = $order->products ?? [];
+        }
         $productDetails = collect($products)->map(function ($product) {
             return $product['name'] . ' : ' . ($product['qty'] ?? 0);
         })->implode(', ');

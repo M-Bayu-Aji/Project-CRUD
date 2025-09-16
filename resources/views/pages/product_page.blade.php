@@ -2,50 +2,50 @@
 
 @section('content')
     <!-- Header -->
-    <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-10">
+    <header class="flex flex-col items-start justify-between mb-6 md:flex-row md:items-center md:mb-10">
         <div class="mb-4 md:mb-0">
-            <h2 class="text-2xl md:text-4xl font-bold text-gray-800 mb-2">
+            <h2 class="mb-2 text-2xl font-bold text-gray-800 md:text-4xl">
                 Products
             </h2>
-            <p class="text-gray-500 text-sm md:text-base">
+            <p class="text-sm text-gray-500 md:text-base">
                 Manage your products here.
             </p>
         </div>
         <a href="{{ route('product.add_product') }}"
-            class="bg-indigo-600 text-white px-4 py-2 md:px-6 md:py-3 rounded-lg hover:bg-indigo-700 transition-colors shadow-lg flex items-center">
-            <i class="fas fa-plus mr-2"></i> Add New Product
+            class="flex items-center px-4 py-2 text-white transition-colors bg-indigo-600 rounded-lg shadow-lg md:px-6 md:py-3 hover:bg-indigo-700">
+            <i class="mr-2 fas fa-plus"></i> Add New Product
         </a>
     </header>
 
     <!-- Product List -->
-    <section class="bg-white rounded-xl shadow-sm p-4 md:p-6 overflow-x-auto">
+    <section class="p-4 overflow-x-auto bg-white shadow-sm rounded-xl md:p-6">
         @if (Session::get('success'))
-            <div id="success-alert" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4 relative"
+            <div id="success-alert" class="relative p-4 mb-4 text-green-700 bg-green-100 border-l-4 border-green-500 animate-slideIn"
                 role="alert">
                 <p>{{ Session::get('success') }}</p>
-                <button type="button" class="text-2xl absolute top-2 right-4 text-green-700 hover:text-green-900"
+                <button type="button" class="absolute text-2xl text-green-700 top-2 right-4 hover:text-green-900"
                     onclick="closeAlert()">&times;</button>
             </div>
         @endif
 
         @if ($product->isEmpty())
-            <div class="text-center text-gray-500 py-6">
+            <div class="py-6 text-center text-gray-500">
                 <p>No products found.</p>
             </div>
         @else
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 md:gap-6">
                 @foreach ($product as $index => $item)
-                    <div class="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all">
+                    <div class="p-4 transition-all bg-white shadow-md rounded-xl hover:shadow-lg">
                         <img alt="Product Image" src="{{ asset($item->image) }}"
                             class="md:w-full md:h-48 w-1/2 mx-auto my-2.5 object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
                             onclick="openImageModal('{{ asset($item->image) }}')" />
 
                         <!-- Image Modal -->
                         <div id="imageModal"
-                            class="fixed inset-0 bg-black bg-opacity-75 hidden z-50 flex items-center justify-center">
+                            class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-75">
                             <div class="relative max-w-4xl mx-auto">
                                 <button onclick="closeImageModal()"
-                                    class="absolute top-4 right-4 text-white text-2xl hover:text-gray-300">
+                                    class="absolute text-2xl text-white top-4 right-4 hover:text-gray-300">
                                     <i class="fas fa-times"></i>
                                 </button>
                                 <img id="modalImage" src="" alt="Full size image"
@@ -53,9 +53,9 @@
                             </div>
                         </div>
                         <div class="p-4">
-                            <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ $item->name }}</h3>
+                            <h3 class="mb-2 text-lg font-semibold text-gray-800">{{ $item->name }}</h3>
                             <div class="space-y-2 text-sm">
-                                <p class="text-indigo-600 font-bold">Rp. {{ number_format($item->price, 0, ',', '.') }}</p>
+                                <p class="font-bold text-indigo-600">Rp. {{ number_format($item->price, 0, ',', '.') }}</p>
                                 <div class="flex justify-between text-gray-600">
                                     <span>Stock: {{ $item->stock }}</span>
                                     <span>Sold: {{ $totalSold[$item->id] ?? 0 }}</span>
@@ -64,11 +64,11 @@
 
                             <div class="flex justify-end mt-4 space-x-3">
                                 <a href="{{ route('product.edit_product', $item->id) }}"
-                                    class="p-2 text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors">
+                                    class="p-2 text-indigo-600 transition-colors rounded-full hover:bg-indigo-50">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <button data-id="{{ $item->id }}"
-                                    class="btn-delete p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors">
+                                    class="p-2 text-red-600 transition-colors rounded-full btn-delete hover:bg-red-50">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
@@ -226,4 +226,23 @@
             }
         });
     </script>
+@endpush
+
+@push('style')
+    <style>
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-slideIn {
+            animation: slideIn 0.5s ease-out forwards;
+        }
+    </style>
 @endpush

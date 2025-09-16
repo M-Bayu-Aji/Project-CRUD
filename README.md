@@ -1,4 +1,4 @@
-# 🛒 Project CRUD - Sistem E-Commerce Laravel
+# 🛒 Sistem E-Commerce Laravel
 
 <div align="center">
 
@@ -34,7 +34,7 @@
 
 ## ✨ Tentang
 
-**Project CRUD** adalah sistem manajemen E-Commerce yang komprehensif dibuat dengan Laravel 11, dirancang untuk menangani inventori produk, pemrosesan pesanan, manajemen pembayaran, dan administrasi pengguna. Aplikasi ini menyediakan solusi lengkap untuk mengelola toko online dengan UI modern dan fungsionalitas backend yang kuat.
+**Sistem E-Commerce Laravel** adalah sistem manajemen E-Commerce yang komprehensif dibuat dengan Laravel 11, dirancang untuk menangani inventori produk, pemrosesan pesanan, manajemen pembayaran, dan administrasi pengguna. Aplikasi ini menyediakan solusi lengkap untuk mengelola toko online dengan UI modern dan fungsionalitas backend yang kuat.
 
 ### 🎯 Sorotan Utama
 
@@ -173,7 +173,7 @@
 ### Variabel Environment
 ```env
 # Aplikasi
-APP_NAME="Project CRUD"
+APP_NAME="Sistem E-Commerce Laravel"
 APP_ENV=local
 APP_KEY=base64:app_key_anda
 APP_DEBUG=true
@@ -355,7 +355,7 @@ Proyek ini dilisensikan di bawah Lisensi MIT - lihat file [LICENSE](LICENSE) unt
 
 ## ✨ About
 
-**Project CRUD** is a comprehensive E-Commerce management system built with Laravel 11, designed to handle product inventory, order processing, payment management, and user administration. This application provides a complete solution for managing an online store with modern UI and robust backend functionality.
+**Sistem E-Commerce Laravel** is a comprehensive E-Commerce management system built with Laravel 11, designed to handle product inventory, order processing, payment management, and user administration. This application provides a complete solution for managing an online store with modern UI and robust backend functionality.
 
 ### 🎯 Key Highlights
 
@@ -494,7 +494,7 @@ Proyek ini dilisensikan di bawah Lisensi MIT - lihat file [LICENSE](LICENSE) unt
 ### Environment Variables
 ```env
 # Application
-APP_NAME="Project CRUD"
+APP_NAME="Sistem E-Commerce Laravel"
 APP_ENV=local
 APP_KEY=base64:your_app_key
 APP_DEBUG=true

@@ -100,8 +100,13 @@ class OrderController extends Controller
     public function show($id)
     {
         $order = Order::find($id);
-        $products = json_decode($order->products, true);
-        
+        // Pastikan data adalah string sebelum json_decode
+        if (!is_array($order->products)) {
+            $products = json_decode($order->products, true);
+        } else {
+            $products = $order->products;
+        }
+
         return view('order.kasir.order', compact('order', 'products'));
     }
 
@@ -119,7 +124,7 @@ class OrderController extends Controller
     {
         // ambil data yg akan ditampilkan pada pdf, bisa juga dengan where atau eloquent lainnya dan jangan gunakan pagination
         $order = Order::find($id)->toArray();
-        // kirim data yg diambil kepada view yg akan ditampilkan, kirim dengan inisial 
+        // kirim data yg diambil kepada view yg akan ditampilkan, kirim dengan inisial
         view()->share('inisial', $order);
         // panggil view blade yg akan dicetak pdf serta data yg akan digunakan
         $pdf = PDF::loadView('order.kasir.download', ['order' => $order]);

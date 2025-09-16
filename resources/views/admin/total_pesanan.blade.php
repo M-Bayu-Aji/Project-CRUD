@@ -53,7 +53,15 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $loop->iteration }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $order->name }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-700">
-                                    @foreach (json_decode($order->products, true) as $product)
+                                    @php
+                                        // Pastikan data adalah string sebelum json_decode
+                                        if (!is_array($order->products)) {
+                                            $products = json_decode($order->products, true);
+                                        } else {
+                                            $products = $order->products;
+                                        }
+                                    @endphp
+                                    @foreach ($products as $product)
                                         <div class="mb-1">
                                             {{ $product['name'] }} : {{ $product['quantity'] }}
                                         </div>

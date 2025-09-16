@@ -15,7 +15,12 @@ class ProductController extends Controller
     {
         $totalSold = Order::all()
             ->flatMap(function ($order) {
-                $products = json_decode($order->products, true);
+                // Pastikan data adalah string sebelum json_decode
+                if (!is_array($order->products)) {
+                    $products = json_decode($order->products, true);
+                } else {
+                    $products = $order->products;
+                }
                 return collect($products);
             })
             ->groupBy('product_id') // Kelompokkan berdasarkan product_id, bukan payment_id
